@@ -64,7 +64,7 @@ struct MealDetailView: View {
 }
 
 #Preview {
-    MealDetailView(meal: sampleMeals[0])
+    MealDetailView(meal: Meal(name: "Oatmeal", carbs: 50, protein: 20, fat: 10, fiber: 5))
         .environmentObject(HealthKitService.shared)
 }
 

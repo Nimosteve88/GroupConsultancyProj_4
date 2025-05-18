@@ -18,17 +18,12 @@ class HealthKitService: ObservableObject {
     private init() {}
 
     func requestAuthorization() {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
-
-        let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
-        healthStore.requestAuthorization(toShare: [], read: [glucoseType]) { success, error in
-            if success {
-                self.startGlucoseQuery()
-            } else if let error = error {
-                print("HealthKit authorization error: \(error)")
+            guard HKHealthStore.isHealthDataAvailable() else { return }
+            let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!
+            healthStore.requestAuthorization(toShare: [], read: [glucoseType]) { success, error in
+                if success { self.startGlucoseQuery() }
             }
         }
-    }
 
     private func startGlucoseQuery() {
         let glucoseType = HKObjectType.quantityType(forIdentifier: .bloodGlucose)!

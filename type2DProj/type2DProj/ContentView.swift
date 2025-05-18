@@ -10,17 +10,14 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+            HomeView()
+                .tabItem { Label("Home", systemImage: "house.fill") }
             MealLibraryView()
-                .tabItem {
-                    Image(systemName: "book.fill")
-                    Text("Meals")
-                }
-
+                .tabItem { Label("Meals", systemImage: "book.fill") }
             CGMView()
-                .tabItem {
-                    Image(systemName: "waveform.path.ecg")
-                    Text("CGM")
-                }
+                .tabItem { Label("CGM", systemImage: "waveform.path.ecg") }
+            AdviceView()
+                .tabItem { Label("Advice", systemImage: "lightbulb.fill") }
         }
         .background(Color.primaryBackground.edgesIgnoringSafeArea(.all))
     }
@@ -29,5 +26,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(HealthKitService.shared)
+        .environmentObject(MealLogViewModel())
+        .environmentObject(AdviceEngine.shared)
 }
 

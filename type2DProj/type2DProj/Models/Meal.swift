@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct Meal: Identifiable {
-    let id = UUID()
-    let name: String
-    let carbs: Double  // grams of carbohydrates
-    let imageName: String?
+struct Meal: Identifiable, Codable {
+    let id: UUID
+    var name: String
+    var carbs: Double
+    var protein: Double
+    var fat: Double
+    var fiber: Double
+    var date: Date
+    var imageName: String?
+
+    init(id: UUID = UUID(), name: String, carbs: Double, protein: Double, fat: Double, fiber: Double, date: Date = Date(), imageName: String? = nil) {
+        self.id = id; self.name = name; self.carbs = carbs; self.protein = protein; self.fat = fat; self.fiber = fiber; self.date = date; self.imageName = imageName
+    }
 }
-
-// Sample data for development/testing
-let sampleMeals: [Meal] = [
-    Meal(name: "Oatmeal with Berries", carbs: 45, imageName: "oatmeal"),
-    Meal(name: "Grilled Chicken Salad", carbs: 12, imageName: "salad"),
-    Meal(name: "Apple and Peanut Butter", carbs: 30, imageName: "apple_pb")
-]
-
