@@ -14,24 +14,17 @@ struct StatCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.title2)
-                Spacer()
-            }
-            Text(title)
-                .font(.headline)
-            Text(value)
-                .font(.title)
-                .bold()
+            HStack { Image(systemName: icon).font(.title2); Spacer() }
+            Text(title).font(.headline)
+            Text(value).font(.title).bold()
         }
         .padding()
-        .frame(height: 120)
         .background(Color.cardBackground)
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .shadow(radius: 4)
     }
 }
+
 
 #Preview {
     StatCard(title: "Last Meal", value: "Pasta", icon: "fork.knife")

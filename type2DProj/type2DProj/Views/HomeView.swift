@@ -6,79 +6,53 @@
 //
 
 import SwiftUI
+import Charts
 
 struct HomeView: View {
-    @EnvironmentObject var mealLogVM: MealLogViewModel
-    @EnvironmentObject var healthKitService: HealthKitService
-    @EnvironmentObject var adviceEngine: AdviceEngine
+    @EnvironmentObject var healthKit: HealthKitService
+    @EnvironmentObject var mealLog: MealLogViewModel
+    @EnvironmentObject var advice: AdviceEngine
+
+    @State private var tasks: [TodayTask] = [
+        .init(time: "07:30 AM", title: "Morning walk"),
+        .init(time: "12:30 PM", title: "Exercise"),
+        .init(time: "17:50 PM", title: "Inject insulin"),
+        .init(time: "20:00 PM", title: "Drink warm water")
+    ]
+
+    private var showBanner: Bool {
+        advice.riskLevel == .high
+    }
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Good \(greeting()),")
-                                .font(.title)
-                                .bold()
-                            Text(Date(), style: .date)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
+                    if showBanner {
+                        AlertBanner(
+                            text: "HIGH HYPOGLYCEMIA RISK",
+                            subtext: "Your glucose level is below range!",
+                            color: .red
+                        )
                     }
+
+                    CombinedChartView(
+                        actual: healthKit.glucoseSamples,
+                        predicted: advice.predictedSamples()
+                    )
+                    .frame(height: 200)
                     .padding(.horizontal)
 
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
-                        StatCard(title: "Last Meal", value: lastMealSummary(), icon: "fork.knife")
-                        StatCard(title: "Glucose", value: latestGlucoseValue(), icon: "waveform.path.ecg")
-                        StatCard(title: "Advice", value: adviceEngine.riskLevel.rawValue, icon: "lightbulb")
-                    }
-                    .padding(.horizontal)
+                    StatsCarousel()
 
-                    VStack(spacing: 16) {
-                        NavigationLink(destination: MealLibraryView()) {
-                            ActionButton(label: "Log a Meal", icon: "plus.circle")
-                        }
-                        NavigationLink(destination: CGMView()) {
-                            ActionButton(label: "View CGM Data", icon: "waveform.path.ecg")
-                        }
-                        NavigationLink(destination: AdviceView()) {
-                            ActionButton(label: "Get Advice", icon: "lightbulb.fill")
-                        }
-                    }
-                    .padding(.horizontal)
+                    QuickActions()
+
+                    TodayTasksList(tasks: $tasks)
                 }
                 .padding(.vertical)
             }
             .navigationTitle("Dashboard")
         }
-    }
-
-    func greeting() -> String {
-        let hour = Calendar.current.component(.hour, from: Date())
-        switch hour {
-        case 6..<12: return "Morning"
-        case 12..<18: return "Afternoon"
-        case 18..<22: return "Evening"
-        default: return "Night"
-        }
-    }
-
-    func lastMealSummary() -> String {
-        if let meal = mealLogVM.meals.first {
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            let timeString = formatter.string(from: meal.date)
-            return "\(meal.name) at \(timeString)"
-        }
-        return "No meals logged"
-    }
-
-    func latestGlucoseValue() -> String {
-        let samples = healthKitService.glucoseSamples
-        let latest = samples.isEmpty ? Double.random(in: 4...10) : samples.last!.value
-        return String(format: "%.1f", latest)
     }
 }
 

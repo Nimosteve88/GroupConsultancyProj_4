@@ -10,20 +10,27 @@ import SwiftUI
 struct ActionButton: View {
     let label: String
     let icon: String
+    var badge: Int? = nil
 
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .font(.headline)
             Text(label)
-                .font(.headline)
+            Spacer()
+            if let b = badge {
+                Text("\(b)")
+                    .font(.caption2).bold()
+                    .padding(4)
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+            }
         }
-        .frame(maxWidth: .infinity)
         .padding()
         .background(Color.accent)
         .foregroundColor(.white)
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .shadow(radius: 2)
     }
 }
 
