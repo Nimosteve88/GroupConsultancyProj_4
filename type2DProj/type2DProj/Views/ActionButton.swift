@@ -11,6 +11,7 @@ struct ActionButton: View {
     let label: String
     let icon: String
     var badge: Int? = nil
+    var action: (() -> Void)? = nil
 
     var body: some View {
         HStack {
