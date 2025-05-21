@@ -14,6 +14,7 @@ struct StatsCarousel: View {
             StatCard(title: "Eaten", value: "2000/3200 cal", icon: "fork.knife")
             StatCard(title: "Risk", value: AdviceEngine.shared.riskLevel.rawValue, icon: "lightbulb.fill")
         }
+        //show numbers of dots
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
         .frame(height: 150)
         .padding(.horizontal)

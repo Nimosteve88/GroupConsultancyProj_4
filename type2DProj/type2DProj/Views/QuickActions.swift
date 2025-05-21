@@ -19,18 +19,18 @@ struct PressableButtonStyle: ButtonStyle {
 
 struct QuickActions: View {
     @EnvironmentObject var mealLog: MealLogViewModel
-    @EnvironmentObject var healthKit: HealthKitService
-    @EnvironmentObject var advice: AdviceEngine
+
+    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        VStack(spacing: 12) {
-            // Log Meal navigates to AddMealView
+        LazyVGrid(columns: columns, spacing: 16) {
+            // Log Meal
             NavigationLink(destination: AddMealView().environmentObject(mealLog)) {
                 ActionButton(label: "Log Meal", icon: "plus.circle")
             }
             .buttonStyle(PressableButtonStyle())
 
-            // Other quick actions (stubbing destinations)
+            // Daily Meal Plan
             Button(action: {
                 // TODO: show Daily Meal Plan
             }) {
@@ -38,6 +38,7 @@ struct QuickActions: View {
             }
             .buttonStyle(PressableButtonStyle())
 
+            // Personal Report
             Button(action: {
                 // TODO: show Personal Report
             }) {
@@ -45,6 +46,7 @@ struct QuickActions: View {
             }
             .buttonStyle(PressableButtonStyle())
 
+            // Suggestion Center
             Button(action: {
                 // TODO: show Suggestion Center
             }) {
@@ -55,6 +57,7 @@ struct QuickActions: View {
         .padding(.horizontal)
     }
 }
+
 
 #Preview {
     QuickActions()

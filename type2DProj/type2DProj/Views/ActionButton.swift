@@ -11,7 +11,6 @@ struct ActionButton: View {
     let label: String
     let icon: String
     var badge: Int? = nil
-    var action: (() -> Void)? = nil
 
     var body: some View {
         HStack {
@@ -28,6 +27,7 @@ struct ActionButton: View {
             }
         }
         .padding()
+        .frame(maxWidth: .infinity, minHeight: 100)
         .background(Color.accent)
         .foregroundColor(.white)
         .cornerRadius(12)
