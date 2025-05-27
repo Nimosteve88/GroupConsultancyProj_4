@@ -21,6 +21,9 @@ struct type2DProjApp: App {
         healthKitService.requestAuthorization()
         UITabBar.appearance().backgroundColor = UIColor.systemBackground
     }
+    
+//12344444
+    
 
     var body: some Scene {
             WindowGroup {
