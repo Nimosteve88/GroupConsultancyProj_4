@@ -16,6 +16,8 @@ struct type2DProjApp: App {
     @StateObject private var profileVM = ProfileSetupViewModel()
     @StateObject private var adviceEngine = AdviceEngine.shared
 
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+
     init() {
         FirebaseApp.configure()
         healthKitService.requestAuthorization()
@@ -26,17 +28,15 @@ struct type2DProjApp: App {
     
 
     var body: some Scene {
-            WindowGroup {
+        WindowGroup {
+            Group {
                 if !session.isLoggedIn {
-                    // Not signed in: Login/Register flow
                     LoginView()
                         .environmentObject(session)
                 } else if session.needsProfileSetup {
-                    // Signed in but no profile data: onboarding
                     ProfileSetupView()
                         .environmentObject(session)
                 } else {
-                    // Fully onboarded: main app
                     ContentView()
                         .environmentObject(session)
                         .environmentObject(healthKitService)
@@ -45,6 +45,8 @@ struct type2DProjApp: App {
                         .environmentObject(profileVM)
                 }
             }
+            .preferredColorScheme(isDarkMode ? ColorScheme.dark : ColorScheme.light)
         }
+    }
 }
 

@@ -50,7 +50,7 @@ struct QuickActions: View {
             Button(action: {
                 // TODO: show Suggestion Center
             }) {
-                ActionButton(label: "Suggestion Center", icon: "bubble.left.and.bubble.right.fill", badge: 4)
+                ActionButton(label: "Copilot", icon: "bubble.left.and.bubble.right.fill", badge: 4)
             }
             .buttonStyle(PressableButtonStyle())
         }
