@@ -14,10 +14,11 @@ struct Meal: Identifiable, Codable {
     var protein: Double
     var fat: Double
     var fiber: Double
+    var calories: Double
     var date: Date
     var imageName: String?
 
-    init(id: UUID = UUID(), name: String, carbs: Double, protein: Double, fat: Double, fiber: Double, date: Date = Date(), imageName: String? = nil) {
-        self.id = id; self.name = name; self.carbs = carbs; self.protein = protein; self.fat = fat; self.fiber = fiber; self.date = date; self.imageName = imageName
+    init(id: UUID = UUID(), name: String, carbs: Double, protein: Double, fat: Double, fiber: Double, calories: Double, date: Date = Date(), imageName: String? = nil) {
+        self.id = id; self.name = name; self.carbs = carbs; self.protein = protein; self.fat = fat; self.fiber = fiber; self.calories = calories ; self.date = date; self.imageName = imageName
     }
 }

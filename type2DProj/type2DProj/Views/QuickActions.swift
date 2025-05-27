@@ -60,6 +60,7 @@ struct QuickActions: View {
 
 
 #Preview {
+    let session = SessionStore()
     QuickActions()
-        .environmentObject(MealLogViewModel())
+        .environmentObject(MealLogViewModel(session: session))
 }

@@ -12,9 +12,10 @@ import Firebase
 struct type2DProjApp: App {
     @StateObject private var session = SessionStore()
     @StateObject private var healthKitService = HealthKitService.shared
-    @StateObject private var mealLogVM = MealLogViewModel()
-    @StateObject private var profileVM = ProfileSetupViewModel()
+    @StateObject private var mealLogVM = MealLogViewModel(session: SessionStore())
     @StateObject private var adviceEngine = AdviceEngine.shared
+    @StateObject private var tasksVM = TodayTasksViewModel(session: SessionStore())
+    @StateObject private var profileSetupVM = ProfileSetupViewModel()
 
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
 
@@ -23,9 +24,6 @@ struct type2DProjApp: App {
         healthKitService.requestAuthorization()
         UITabBar.appearance().backgroundColor = UIColor.systemBackground
     }
-    
-//12344444
-    
 
     var body: some Scene {
         WindowGroup {
@@ -42,10 +40,11 @@ struct type2DProjApp: App {
                         .environmentObject(healthKitService)
                         .environmentObject(mealLogVM)
                         .environmentObject(adviceEngine)
-                        .environmentObject(profileVM)
+                        .environmentObject(tasksVM)
+                        .environmentObject(profileSetupVM)
                 }
             }
-            .preferredColorScheme(isDarkMode ? ColorScheme.dark : ColorScheme.light)
+            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }

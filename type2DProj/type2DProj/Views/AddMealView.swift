@@ -33,13 +33,14 @@ struct AddMealView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) { Button("Save") {
                     guard let cd = Double(carbs), let pd = Double(protein), let fd = Double(fat), let fd2 = Double(fiber), !name.isEmpty else { return }
-                    mealLogVM.add(Meal(name: name, carbs: cd, protein: pd, fat: fd, fiber: fd2, date: date))
+                    mealLogVM.add(Meal(name: name, carbs: cd, protein: pd, fat: fd, fiber: fd2,calories: (fd*9)+(cd*4)+(pd*4) ,date: date))
                     dismiss() } }
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
             }
         }
     }
 }
+
 #Preview {
     AddMealView()
 }

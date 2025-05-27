@@ -26,9 +26,10 @@ struct ContentView: View {
 }
 
 #Preview {
+    let session = SessionStore()
     ContentView()
         .environmentObject(HealthKitService.shared)
-        .environmentObject(MealLogViewModel())
+        .environmentObject(MealLogViewModel(session: session))
         .environmentObject(AdviceEngine.shared)
 }
 

@@ -30,13 +30,13 @@ struct AdviceView: View {
 }
 
 #Preview {
+    let session = SessionStore()
     Group {
         ContentView()
-            .environmentObject(MealLogViewModel())
+            .environmentObject(MealLogViewModel(session: session))
             .environmentObject(HealthKitService.shared)
             .environmentObject(AdviceEngine.shared)
 
-        MealDetailView(meal: Meal(name:"Oatmeal",carbs:45,protein:5,fat:2,fiber:4,date:Date(),imageName:"oatmeal"))
-
+        MealDetailView(meal: Meal(name:"Oatmeal",carbs:45,protein:5,fat:2,fiber:4,calories:80, date:Date(),imageName:"oatmeal"))
     }
 }

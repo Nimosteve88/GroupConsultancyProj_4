@@ -13,85 +13,118 @@ struct HomeView: View {
     @EnvironmentObject var healthKit: HealthKitService
     @EnvironmentObject var mealLog: MealLogViewModel
     @EnvironmentObject var advice: AdviceEngine
-    @State private var showProfile = false
-    @State private var showProfileSetup = false
+    @EnvironmentObject var tasksVM: TodayTasksViewModel
 
-    @State private var tasks: [TodayTask] = [
-        .init(time: "07:30 AM", title: "Morning walk"),
-        .init(time: "12:30 PM", title: "Exercise"),
-        .init(time: "17:50 PM", title: "Inject insulin"),
-        .init(time: "20:00 PM", title: "Drink warm water")
-    ]
+    @State private var showProfile = false
+    @State private var showTaskEditor = false
+    @State private var editingTask: TodayTasksViewModelTask? = nil
 
     private var showBanner: Bool {
         advice.riskLevel == .high
     }
 
+    private func removeTasks(at offsets: IndexSet) {
+        offsets.map { tasksVM.tasks[$0] }.forEach { tasksVM.remove($0) }
+    }
+
+    private var todayTasks: [TodayTasksViewModelTask] {
+        let calendar = Calendar.current
+        return tasksVM.tasks.filter { task in
+            calendar.isDateInToday(task.time)
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
                     if showBanner {
-                        AlertBanner(
-                            text: "HIGH HYPOGLYCEMIA RISK",
-                            subtext: "Your glucose level is below range!",
-                            color: .red
-                        )
+                        AlertBanner(text: "HIGH HYPOGLYCEMIA RISK",
+                                    subtext: "Your glucose level is below range!",
+                                    color: .red)
                     }
 
-                    CombinedChartView(
-                        actual: healthKit.glucoseSamples,
-                        predicted: advice.predictedSamples()
-                    )
-                    .frame(height: 200)
-                    .padding(.horizontal)
+                    CombinedChartView(actual: healthKit.glucoseSamples,
+                                      predicted: advice.predictedSamples())
+                        .frame(height: 200)
+                        .padding(.horizontal)
 
                     StatsCarousel()
 
                     QuickActions()
 
-                    TodayTasksList(tasks: $tasks)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Today")
+                                .font(.title2)
+                                .bold()
+                            Spacer()
+                            Button(action: {
+                                editingTask = nil
+                                showTaskEditor = true
+                            }) {
+                                Image(systemName: "plus.circle")
+                            }
+                        }
+                        .padding(.horizontal)
+
+
+                        // In the List, use todayTasks instead of tasksVM.tasks
+                        List {
+                            ForEach(todayTasks) { task in
+                                HStack {
+                                    Button(action: {
+                                        var updated = task
+                                        updated.done.toggle()
+                                        tasksVM.update(updated)
+                                    }) {
+                                        Image(systemName: task.done ? "checkmark.circle.fill" : "circle")
+                                    }
+                                    // Format time for display
+                                    Text("\(task.time.formatted(date: .omitted, time: .shortened)) - \(task.title)")
+                                    Spacer()
+                                }
+                                .padding(.horizontal)
+                            }
+                            .onDelete { offsets in
+                                // Map offsets to todayTasks, then find their index in tasksVM.tasks
+                                let tasksToRemove = offsets.map { todayTasks[$0] }
+                                tasksToRemove.forEach { tasksVM.remove($0) }
+                            }
+                        }
+                        .frame(height: min(CGFloat(todayTasks.count) * 50, 300))
+                        .listStyle(PlainListStyle())
+                    }
                 }
                 .padding(.vertical)
             }
             .navigationTitle("Dashboard")
             .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            HStack(spacing: 8) {
-                                Text(session.userEmail)
-                                    .font(.subheadline)
-                                    .foregroundColor(.primary)
-                                Image(systemName: "person.circle.fill")
-                                    .font(.title2)
-                                    .foregroundColor(.gray)
-                                    .onTapGesture {
-                                        showProfile = true
-                                }
-                            }
-                        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack(spacing: 8) {
+                        Text(session.userEmail)
+                        Image(systemName: "person.circle.fill")
+                            .onTapGesture { showProfile = true }
                     }
                 }
-                .sheet(isPresented: $showProfile) {
-                    ProfileView()
-                        .environmentObject(session)
-                }
-                .onAppear {
-                            showProfileSetup = session.needsProfileSetup
-                        }
-                        .onChange(of: session.needsProfileSetup) { needs in
-                            showProfileSetup = needs
-                        }
-                        .fullScreenCover(isPresented: $showProfileSetup) {
-                            ProfileSetupView()
-                                .environmentObject(session)
-                        }
+            }
+            .sheet(isPresented: $showProfile) {
+                ProfileView().environmentObject(session)
+            }
+            .sheet(isPresented: $showTaskEditor) {
+                TaskEditorView(task: editingTask)
+                    .environmentObject(tasksVM)
+            }
+        }
     }
 }
 
 #Preview {
+    let session = SessionStore()
     HomeView()
-        .environmentObject(SessionStore())
+        .environmentObject(session)
         .environmentObject(HealthKitService.shared)
-        .environmentObject(MealLogViewModel())
+        .environmentObject(MealLogViewModel(session: session))
         .environmentObject(AdviceEngine.shared)
+        .environmentObject(TodayTasksViewModel(session: session))
 }
