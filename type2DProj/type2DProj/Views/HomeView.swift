@@ -9,9 +9,12 @@ import SwiftUI
 import Charts
 
 struct HomeView: View {
+    @EnvironmentObject var session: SessionStore
     @EnvironmentObject var healthKit: HealthKitService
     @EnvironmentObject var mealLog: MealLogViewModel
     @EnvironmentObject var advice: AdviceEngine
+    @State private var showProfile = false
+    @State private var showProfileSetup = false
 
     @State private var tasks: [TodayTask] = [
         .init(time: "07:30 AM", title: "Morning walk"),
@@ -52,10 +55,43 @@ struct HomeView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Dashboard")
-        }
+            .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            HStack(spacing: 8) {
+                                Text(session.userEmail)
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
+                                Image(systemName: "person.circle.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.gray)
+                                    .onTapGesture {
+                                        showProfile = true
+                                }
+                            }
+                        }
+                    }
+                }
+                .sheet(isPresented: $showProfile) {
+                    ProfileView()
+                        .environmentObject(session)
+                }
+                .onAppear {
+                            showProfileSetup = session.needsProfileSetup
+                        }
+                        .onChange(of: session.needsProfileSetup) { needs in
+                            showProfileSetup = needs
+                        }
+                        .fullScreenCover(isPresented: $showProfileSetup) {
+                            ProfileSetupView()
+                                .environmentObject(session)
+                        }
     }
 }
 
 #Preview {
     HomeView()
+        .environmentObject(SessionStore())
+        .environmentObject(HealthKitService.shared)
+        .environmentObject(MealLogViewModel())
+        .environmentObject(AdviceEngine.shared)
 }

@@ -18,6 +18,8 @@ struct ContentView: View {
                 .tabItem { Label("CGM", systemImage: "waveform.path.ecg") }
             AdviceView()
                 .tabItem { Label("Advice", systemImage: "lightbulb.fill") }
+            ProfileView()
+                .tabItem { Label("Profile", systemImage: "person.fill") }
         }
         .background(Color.primaryBackground.edgesIgnoringSafeArea(.all))
     }
