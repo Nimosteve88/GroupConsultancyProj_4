@@ -63,8 +63,8 @@ struct MealDetailView: View {
     }
 }
 
-#Preview {
-    MealDetailView(meal: Meal(name: "Oatmeal", carbs: 50, protein: 20, fat: 10, fiber: 5, calories: 300, date: Date(), imageName: "oatmeal"))
-        .environmentObject(HealthKitService.shared)
-}
+//#Preview {
+//    MealDetailView(meal: Meal(name: "Oatmeal", carbs: 50, protein: 20, fat: 10, fiber: 5, calories: 300, date: Date(), imageName: "oatmeal"))
+//        .environmentObject(HealthKitService.shared)
+//}
 

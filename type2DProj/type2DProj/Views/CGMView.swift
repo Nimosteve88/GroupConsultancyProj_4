@@ -52,25 +52,25 @@ struct CGMView: View {
     }
 }
 
-#Preview {
-    let session = SessionStore()
-    Group {
-        ContentView()
-            .environmentObject(MealLogViewModel(session: session))
-            .environmentObject(HealthKitService.shared)
-
-        MealDetailView(
-            meal: Meal(
-                name: "Oatmeal with Berries",
-                carbs: 45,
-                protein: 5,
-                fat: 2,
-                fiber: 4,
-                calories: 80,
-                date: Date(),
-                imageName: "oatmeal"
-            )
-        )
-    }
-}
+//#Preview {
+//    let session = SessionStore()
+//    Group {
+//        ContentView()
+//            .environmentObject(MealLogViewModel(session: session))
+//            .environmentObject(HealthKitService.shared)
+//
+//        MealDetailView(
+//            meal: Meal(
+//                name: "Oatmeal with Berries",
+//                carbs: 45,
+//                protein: 5,
+//                fat: 2,
+//                fiber: 4,
+//                calories: 80,
+//                date: Date(),
+//                imageName: "oatmeal"
+//            )
+//        )
+//    }
+//}
 

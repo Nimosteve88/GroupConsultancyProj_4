@@ -14,8 +14,8 @@ struct ContentView: View {
                 .tabItem { Label("Home", systemImage: "house.fill") }
             MealLibraryView()
                 .tabItem { Label("Meals", systemImage: "book.fill") }
-            CGMView()
-                .tabItem { Label("CGM", systemImage: "waveform.path.ecg") }
+            AnalysisView()
+                .tabItem { Label("Analysis", systemImage: "chart.bar.fill") }
             AdviceView()
                 .tabItem { Label("Advice", systemImage: "lightbulb.fill") }
             ProfileView()

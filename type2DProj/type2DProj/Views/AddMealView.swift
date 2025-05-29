@@ -10,6 +10,10 @@ import SwiftUI
 struct AddMealView: View {
     @EnvironmentObject var mealLogVM: MealLogViewModel
     @Environment(\.dismiss) var dismiss
+
+    let defaultType: MealType
+    @State private var type: MealType
+
     @State private var name = ""
     @State private var carbs = ""
     @State private var protein = ""
@@ -17,9 +21,22 @@ struct AddMealView: View {
     @State private var fiber = ""
     @State private var date = Date()
 
+    init(defaultType: MealType = .breakfast) {
+        self.defaultType = defaultType
+        _type = State(initialValue: defaultType)
+    }
+
     var body: some View {
         NavigationView {
             Form {
+                Section("Type") {
+                    Picker("Meal Type", selection: $type) {
+                        ForEach(MealType.allCases) { t in
+                            Text(t.rawValue).tag(t)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
                 Section("Meal Info") {
                     TextField("Name", text: $name)
                     TextField("Carbs (g)", text: $carbs).keyboardType(.decimalPad)
@@ -31,15 +48,42 @@ struct AddMealView: View {
             }
             .navigationTitle("Add Meal")
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Save") {
-                    guard let cd = Double(carbs), let pd = Double(protein), let fd = Double(fat), let fd2 = Double(fiber), !name.isEmpty else { return }
-                    mealLogVM.add(Meal(name: name, carbs: cd, protein: pd, fat: fd, fiber: fd2,calories: (fd*9)+(cd*4)+(pd*4) ,date: date))
-                    dismiss() } }
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        guard
+                            let cd = Double(carbs),
+                            let pd = Double(protein),
+                            let fd = Double(fat),
+                            let fib = Double(fiber),
+                            !name.isEmpty
+                        else { return }
+
+                        let meal = Meal(
+                            name: name,
+                            type: type,
+                            carbs: cd,
+                            protein: pd,
+                            fat: fd,
+                            fiber: fib,
+                            date: date
+                        )
+                        mealLogVM.add(meal)
+                        dismiss()
+                    }
+                    .disabled(name.isEmpty
+                              || Double(carbs) == nil
+                              || Double(protein) == nil
+                              || Double(fat) == nil
+                              || Double(fiber) == nil)
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
             }
         }
     }
 }
+
 
 #Preview {
     AddMealView()
