@@ -44,10 +44,15 @@ struct HomeView: View {
                                     color: .red)
                     }
 
-                    CombinedChartView(actual: healthKit.glucoseSamples,
-                                      predicted: advice.predictedSamples())
-                        .frame(height: 200)
-                        .padding(.horizontal)
+                    NavigationLink(destination: CGMView()) {
+                        CombinedChartView(
+                            actual: healthKit.glucoseSamples,
+                                    predicted: advice.predictedSamples()
+                                    )
+                                    .frame(height: 200)
+                                    .padding(.horizontal)
+                            }
+                            .buttonStyle(PlainButtonStyle())
 
                     StatsCarousel()
 

@@ -2,11 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>&quot;This app needs Bluetooth to stay connected to your CGM device.&quot;</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>&quot;This app needs to write glucose data to HealthKit.&quot;</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>&quot;This app needs read access to your blood glucose data to display your CGM readings&quot;</string>
+	<string>&quot;This app needs to read glucose data for display and analysis.&quot;</string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict/>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
 	</array>
 </dict>
 </plist>

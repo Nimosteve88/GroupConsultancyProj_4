@@ -1,0 +1,2 @@
+github "LoopKit/LoopKit" "v3.0"
+github "LoopKit/dexcom-share-client-swift" "v1.2"

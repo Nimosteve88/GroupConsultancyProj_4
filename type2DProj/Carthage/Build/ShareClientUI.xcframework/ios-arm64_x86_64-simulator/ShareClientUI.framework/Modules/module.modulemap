@@ -1,0 +1,11 @@
+framework module ShareClientUI {
+  umbrella header "ShareClientUI.h"
+  export *
+
+  module * { export * }
+}
+
+module ShareClientUI.Swift {
+  header "ShareClientUI-Swift.h"
+  requires objc
+}

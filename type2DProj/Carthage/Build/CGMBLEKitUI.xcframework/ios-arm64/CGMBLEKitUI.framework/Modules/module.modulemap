@@ -1,0 +1,11 @@
+framework module CGMBLEKitUI {
+  umbrella header "CGMBLEKitUI.h"
+  export *
+
+  module * { export * }
+}
+
+module CGMBLEKitUI.Swift {
+  header "CGMBLEKitUI-Swift.h"
+  requires objc
+}

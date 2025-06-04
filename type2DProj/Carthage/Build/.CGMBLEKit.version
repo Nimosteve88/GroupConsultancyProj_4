@@ -1,0 +1,33 @@
+{
+  "iOS" : [
+    {
+      "hash" : "d16a68002a6aba8dec1c9a48d6f3b72dc53a32ec6ccda573e9fcc14249cccd94",
+      "name" : "CGMBLEKit",
+      "identifier" : "ios-arm64",
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "container" : "CGMBLEKit.xcframework"
+    },
+    {
+      "hash" : "27d294f75ef7e23c0b65257feaaf3dec07be875a050a27f9164a1568bc47c0c9",
+      "name" : "CGMBLEKit",
+      "identifier" : "ios-arm64_x86_64-simulator",
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "container" : "CGMBLEKit.xcframework"
+    },
+    {
+      "hash" : "a55764726143bf046694d6392faba366b08facf6652c62232be012940e69b8cc",
+      "name" : "CGMBLEKitUI",
+      "identifier" : "ios-arm64",
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "container" : "CGMBLEKitUI.xcframework"
+    },
+    {
+      "hash" : "0eb2419940459ed78fbb55197fc3ec66b984aee82eceeca3f1289d8422ba351a",
+      "name" : "CGMBLEKitUI",
+      "identifier" : "ios-arm64_x86_64-simulator",
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "container" : "CGMBLEKitUI.xcframework"
+    }
+  ],
+  "commitish" : "v3.2"
+}
