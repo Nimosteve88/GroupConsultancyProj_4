@@ -36,8 +36,21 @@ struct MealDetailView: View {
                 .padding(.horizontal)
 
                 Button(action: {
-                    AIService.shared.analyzeMeal(meal) { feedback in
-                        aiFeedback = feedback
+                    AIService.shared.analyzeMeal(meal.name) { result in
+                        if let error = result["error"] as? String {
+                            aiFeedback = "❗️" + error
+                            return
+                        }
+
+                        let feedbackText = """
+                        Name: \(result["name"] ?? "N/A")
+                        Carbs: \(result["carbs"] ?? "-") g
+                        Protein: \(result["protein"] ?? "-") g
+                        Fat: \(result["fat"] ?? "-") g
+                        Fiber: \(result["fiber"] ?? "-") g
+                        """
+
+                        aiFeedback = feedbackText
                     }
                 }) {
                     Label("Analyze Meal", systemImage: "sparkles")
