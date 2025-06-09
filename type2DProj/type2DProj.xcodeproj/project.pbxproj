@@ -5731,12 +5731,12 @@
 					ProjectRef = 0CC8CED92DEE60780052E21B /* LoopKit.xcodeproj */;
 				},
 				{
-					ProductGroup = 0CC8D6A02DEE60780052E21B /* Products */;
-					ProjectRef = 0CC8CF1E2DEE60780052E21B /* ShareClient.xcodeproj */;
-				},
-				{
 					ProductGroup = 0CC8D6A82DEE60780052E21B /* Products */;
 					ProjectRef = 0CC8D4892DEE60780052E21B /* ShareClient.xcodeproj */;
+				},
+				{
+					ProductGroup = 0CC8D6A02DEE60780052E21B /* Products */;
+					ProjectRef = 0CC8CF1E2DEE60780052E21B /* ShareClient.xcodeproj */;
 				},
 			);
 			projectRoot = "";

@@ -1,4 +1,3 @@
-//
 //  AddMealView.swift
 //  type2DProj
 //
@@ -10,7 +9,7 @@ import Speech
 
 struct AddMealView: View {
     @EnvironmentObject var mealLogVM: MealLogViewModel
-    @Environment(\.dismiss) var dismiss
+    @Environment(\ .dismiss) var dismiss
 
     let defaultType: MealType
     @State private var type: MealType
@@ -34,7 +33,10 @@ struct AddMealView: View {
     @State private var imageResultText = ""
     @State private var aiInputText = ""
     @State private var aiTextError = ""
-    @State private var feedbackMessage = ""
+
+    // New loading state flags
+    @State private var isAnalyzingText = false
+    @State private var isAnalyzingVoice = false
 
     init(defaultType: MealType = .breakfast) {
         self.defaultType = defaultType
@@ -44,7 +46,6 @@ struct AddMealView: View {
     var body: some View {
         NavigationView {
             Form {
-                // Meal type picker
                 Section("Type") {
                     Picker("Meal Type", selection: $type) {
                         ForEach(MealType.allCases) { t in
@@ -54,7 +55,6 @@ struct AddMealView: View {
                     .pickerStyle(.segmented)
                 }
 
-                // Meal nutrition fields
                 Section("Meal Info") {
                     TextField("Name", text: $name)
                     TextField("Carbs (g)", text: $carbs).keyboardType(.decimalPad)
@@ -64,26 +64,39 @@ struct AddMealView: View {
                     DatePicker("Time", selection: $date)
                 }
 
-                // AI Text Input
                 Section("AI Text Input") {
                     TextEditor(text: $aiInputText)
                         .frame(height: 100)
                         .border(Color.gray.opacity(0.4))
 
-                    Button("Analyze Description") {
+                    Button(action: {
+                        isAnalyzingText = true
                         AIService.shared.analyzeMeal(aiInputText) { result in
-                            if let error = result["error"] as? String {
-                                aiTextError = error
-                                return
+                            DispatchQueue.main.async {
+                                isAnalyzingText = false
+                                if let error = result["error"] as? String {
+                                    aiTextError = error
+                                    return
+                                }
+                                name = result["name"] as? String ?? ""
+                                carbs = "\(result["carbs"] ?? "")"
+                                protein = "\(result["protein"] ?? "")"
+                                fat = "\(result["fat"] ?? "")"
+                                fiber = "\(result["fiber"] ?? "")"
+                                aiTextError = ""
                             }
-
-                            name = result["name"] as? String ?? ""
-                            carbs = "\(result["carbs"] ?? "")"
-                            protein = "\(result["protein"] ?? "")"
-                            fat = "\(result["fat"] ?? "")"
-                            fiber = "\(result["fiber"] ?? "")"
-                            aiTextError = ""
                         }
+                    }) {
+                        HStack {
+                            Image(systemName: "bolt.fill")
+                            Text("Analyze Description")
+                        }
+                    }
+                    .disabled(isAnalyzingText || aiInputText.isEmpty)
+
+                    if isAnalyzingText {
+                        ProgressView("Analyzing description...")
+                            .padding(.top, 5)
                     }
 
                     if !aiTextError.isEmpty {
@@ -96,38 +109,42 @@ struct AddMealView: View {
                 Section("Voice Input") {
                     Button(action: {
                         #if targetEnvironment(simulator)
-        
                         let simulatedText = "I had a chicken sandwich with lettuce and tomato"
                         resultText = simulatedText
+                        isAnalyzingVoice = true
                         AIService.shared.analyzeMeal(simulatedText) { result in
-                            if let error = result["error"] as? String {
-                                adviceFromLLM = "❗️" + error
-                                return
-                            }
-                            
-                            name = result["name"] as? String ?? ""
-                            carbs = "\(result["carbs"] ?? "")"
-                            protein = "\(result["protein"] ?? "")"
-                            fat = "\(result["fat"] ?? "")"
-                            fiber = "\(result["fiber"] ?? "")"
-                            adviceFromLLM = "✅ Analyzed successfully"
-                        }
-                        #else
-                    
-                        speechManager.startRecording { text in
-                            resultText = text
-                            AIService.shared.analyzeMeal(text) { result in
+                            DispatchQueue.main.async {
+                                isAnalyzingVoice = false
                                 if let error = result["error"] as? String {
                                     adviceFromLLM = "❗️" + error
                                     return
                                 }
-                                
                                 name = result["name"] as? String ?? ""
                                 carbs = "\(result["carbs"] ?? "")"
                                 protein = "\(result["protein"] ?? "")"
                                 fat = "\(result["fat"] ?? "")"
                                 fiber = "\(result["fiber"] ?? "")"
                                 adviceFromLLM = "✅ Analyzed successfully"
+                            }
+                        }
+                        #else
+                        speechManager.startRecording { text in
+                            resultText = text
+                            isAnalyzingVoice = true
+                            AIService.shared.analyzeMeal(text) { result in
+                                DispatchQueue.main.async {
+                                    isAnalyzingVoice = false
+                                    if let error = result["error"] as? String {
+                                        adviceFromLLM = "❗️" + error
+                                        return
+                                    }
+                                    name = result["name"] as? String ?? ""
+                                    carbs = "\(result["carbs"] ?? "")"
+                                    protein = "\(result["protein"] ?? "")"
+                                    fat = "\(result["fat"] ?? "")"
+                                    fiber = "\(result["fiber"] ?? "")"
+                                    adviceFromLLM = "✅ Analyzed successfully"
+                                }
                             }
                         }
                         #endif
@@ -138,13 +155,19 @@ struct AddMealView: View {
                         }
                         .foregroundColor(speechManager.isRecording ? .red : .blue)
                     }
-                    
+                    .disabled(isAnalyzingVoice)
+
+                    if isAnalyzingVoice {
+                        ProgressView("Analyzing voice...")
+                            .padding(.top, 5)
+                    }
+
                     if !resultText.isEmpty {
                         Text("You said: \(resultText)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
-                    
+
                     if !adviceFromLLM.isEmpty {
                         Text(adviceFromLLM)
                             .font(.subheadline)
@@ -152,18 +175,15 @@ struct AddMealView: View {
                     }
                 }
 
-                // Image input → Gemini
                 Section("Photo Input") {
-                    Button(action: {
-                        showImageSourceAlert = true
-                    }) {
+                    Button(action: { showImageSourceAlert = true }) {
                         HStack {
                             Image(systemName: "camera.fill")
                             Text("Take or Choose Photo")
                         }
                         .foregroundColor(.blue)
                     }
-                    
+
                     if let image = selectedImage {
                         VStack {
                             Image(uiImage: image)
@@ -171,14 +191,14 @@ struct AddMealView: View {
                                 .scaledToFit()
                                 .frame(height: 200)
                                 .cornerRadius(10)
-                            
+
                             if isAnalyzingImage {
                                 ProgressView("Analyzing image...")
                                     .padding(.top, 5)
                             }
                         }
                     }
-                    
+
                     if !imageResultText.isEmpty {
                         Text(imageResultText)
                             .font(.subheadline)
@@ -186,31 +206,26 @@ struct AddMealView: View {
                     }
                 }
             }
-
             .navigationTitle("Add Meal")
-
-
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(sourceType: imageSourceType) { image in
-                    self.selectedImage = image
-                    self.isAnalyzingImage = true
-                    self.imageResultText = ""
-                    
+                    selectedImage = image
+                    isAnalyzingImage = true
+                    imageResultText = ""
                     AIService.shared.analyzeImage(image) { result in
-                        self.isAnalyzingImage = false
-                        
-                        if let error = result["error"] as? String {
-                            self.imageResultText = "❗️" + error
-                            return
+                        DispatchQueue.main.async {
+                            isAnalyzingImage = false
+                            if let error = result["error"] as? String {
+                                imageResultText = "❗️" + error
+                                return
+                            }
+                            name = result["name"] as? String ?? ""
+                            carbs = "\(result["carbs"] ?? "")"
+                            protein = "\(result["protein"] ?? "")"
+                            fat = "\(result["fat"] ?? "")"
+                            fiber = "\(result["fiber"] ?? "")"
+                            imageResultText = "✅ Analysis complete: \(name)"
                         }
-                        
-                        self.name = result["name"] as? String ?? ""
-                        self.carbs = "\(result["carbs"] ?? "")"
-                        self.protein = "\(result["protein"] ?? "")"
-                        self.fat = "\(result["fat"] ?? "")"
-                        self.fiber = "\(result["fiber"] ?? "")"
-                        
-                        self.imageResultText = "✅ Analysis complete: \(self.name)"
                     }
                 }
             }
@@ -223,38 +238,18 @@ struct AddMealView: View {
                     imageSourceType = .photoLibrary
                     isImagePickerPresented = true
                 }
-                Button("Cancel", role: .cancel) { }
+                Button("Cancel", role: .cancel) {}
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        guard
-                            let cd = Double(carbs),
-                            let pd = Double(protein),
-                            let fd = Double(fat),
-                            let fib = Double(fiber),
-                            !name.isEmpty
-                        else { return }
-
-                        let meal = Meal(
-                            name: name,
-                            type: type,
-                            carbs: cd,
-                            protein: pd,
-                            fat: fd,
-                            fiber: fib,
-                            date: date
-                        )
+                        guard let cd = Double(carbs), let pd = Double(protein), let fd = Double(fat), let fib = Double(fiber), !name.isEmpty else { return }
+                        let meal = Meal(name: name, type: type, carbs: cd, protein: pd, fat: fd, fiber: fib, date: date)
                         mealLogVM.add(meal)
                         dismiss()
                     }
-                    .disabled(name.isEmpty
-                              || Double(carbs) == nil
-                              || Double(protein) == nil
-                              || Double(fat) == nil
-                              || Double(fiber) == nil)
+                    .disabled(name.isEmpty || Double(carbs) == nil || Double(protein) == nil || Double(fat) == nil || Double(fiber) == nil)
                 }
-
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }

@@ -46,11 +46,13 @@ struct QuickActions: View {
             }
             .buttonStyle(PressableButtonStyle())
 
-            // Suggestion Center
-            Button(action: {
-                // TODO: show Suggestion Center
-            }) {
-                ActionButton(label: "Copilot", icon: "bubble.left.and.bubble.right.fill", badge: 4)
+            // Copilot
+            NavigationLink(destination: ChatView()) {
+                ActionButton(
+                    label: "Copilot",
+                    icon: "bubble.left.and.bubble.right.fill",
+                    badge: 4
+                )
             }
             .buttonStyle(PressableButtonStyle())
         }
