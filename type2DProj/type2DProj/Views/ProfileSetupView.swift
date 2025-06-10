@@ -83,7 +83,7 @@ struct ProfileSetupView: View {
                 Button("OK", role: .cancel) {}
             }
             .onAppear {
-                if let uid = session.authService.user?.uid {
+                if let uid = session.userId {
                     viewModel.loadExistingProfile(uid: uid)
                 }
             }

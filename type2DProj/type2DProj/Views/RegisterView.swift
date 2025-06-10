@@ -43,7 +43,7 @@ struct RegisterView: View {
                         .foregroundColor(.red)
                         .font(.footnote)
                 }
-                if let error = session.authError {
+                if let error = session.errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                         .multilineTextAlignment(.center)
@@ -67,7 +67,7 @@ struct RegisterView: View {
                         isLoading = false
                     }
                 }
-                .onChange(of: session.authError) { error in
+                .onChange(of: session.errorMessage) { error in
                     if error != nil {
                         isLoading = false
                     }
@@ -82,7 +82,16 @@ struct RegisterView: View {
 
     private func register() {
         isLoading = true
-        session.signUp(email: email, password: password)
+        session.signUp(email: email, password: password) { result in
+            isLoading = false
+            switch result {
+                    case .success:
+                    // nothing extra to do here; auth listener handles state
+                    break
+                    case .failure(let error):
+                        print("Login failed: \(error.localizedDescription)")
+                        }
+                    }
     }
 }
 

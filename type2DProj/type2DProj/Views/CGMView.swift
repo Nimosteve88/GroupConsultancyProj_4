@@ -6,286 +6,143 @@
 //
 
 import SwiftUI
-import CoreBluetooth
+import Charts
 
-struct CGMView: View {
-    @StateObject private var cgmService = CGMService()
-    @State private var showSNEntry = false
-    @State private var selectedPeripheral: CGMService.Peripheral?
-    @State private var snInput = ""
-    @State private var searchText = ""
-
-    var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 16) {
-                connectionStatusHeader
-
-                switch cgmService.connectionState {
-                case .connected:
-                    glucoseReadingsView
-
-                case .connecting:
-                    connectingView
-
-                default:
-                    deviceListView
-                }
-
-                Spacer()
-            }
-            .padding()
-            .navigationTitle("CGM Data")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if cgmService.connectionState == .connected {
-                        Button("Disconnect") {
-                            cgmService.disconnect()
-                        }
-                    }
-                }
-            }
-            .alert("Error", isPresented: .constant(cgmService.lastError != nil)) {
-                Button("OK") {
-                    cgmService.lastError = nil
-                }
-            } message: {
-                Text(cgmService.lastError ?? "Unknown error")
-            }
-            .sheet(isPresented: $showSNEntry) {
-                serialNumberEntryView
-            }
-        }
-    }
-
-    // MARK: – Subviews
-
-    private var connectionStatusHeader: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Real-Time Glucose")
-                .font(.largeTitle)
-                .bold()
-
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(connectionStatusColor)
-                    .frame(width: 12, height: 12)
-                Text(connectionStatusText)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-
-    private var glucoseReadingsView: some View {
-        Group {
-            if cgmService.glucoseReadings.isEmpty {
-                VStack {
-                    Spacer()
-                    Text("No readings received yet")
-                        .foregroundColor(.secondary)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-            } else {
-                List {
-                    // Show most recent first
-                    ForEach(cgmService.glucoseReadings) { reading in
-                        HStack {
-                            Text(reading.timestamp, style: .time)
-                                .font(.body)
-
-                            Spacer()
-
-                            Text("\(Int(reading.value))")
-                                .font(.title2)
-                                .bold()
-                                .foregroundColor(glucoseColor(for: reading.value))
-
-                            if let trend = reading.trend {
-                                trendArrow(for: trend)
-                                    .foregroundColor(trendColor(for: trend))
-                            }
-                        }
-                    }
-                }
-                .listStyle(PlainListStyle())
-            }
-        }
-        .frame(maxHeight: .infinity)
-    }
-
-    private var connectingView: some View {
-        VStack {
-            Spacer()
-            ProgressView()
-                .scaleEffect(1.5)
-            Text("Connecting…")
-                .font(.headline)
-                .padding(.top)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private var deviceListView: some View {
-        VStack(spacing: 16) {
-            Text("Available CGM Devices")
-                .font(.headline)
-
-            TextField("Search devices…", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-
-            List(filteredPeripherals) { peripheral in
-                Button(action: {
-                    selectedPeripheral = peripheral
-                    snInput = ""
-                    showSNEntry = true
-                }) {
-                    HStack {
-                        Image(systemName: "dot.radiowaves.left.and.right")
-                        Text(peripheral.name ?? peripheral.id.uuidString)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-            .listStyle(PlainListStyle())
-            .frame(height: 200)
-
-            Button(action: {
-                cgmService.startScanning()
-            }) {
-                Label("Scan for Devices", systemImage: "arrow.clockwise")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-        }
-    }
-
-    private var serialNumberEntryView: some View {
-        NavigationView {
-            Form {
-                Section {
-                    TextField("Enter 6-digit SN", text: $snInput)
-                        .keyboardType(.asciiCapable)
-                        .autocapitalization(.allCharacters)
-                        .disableAutocorrection(true)
-                } header: {
-                    Text("Serial Number")
-                } footer: {
-                    Text("Example: 01A2B3")
-                }
-            }
-            .navigationTitle("Connect to Device")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        showSNEntry = false
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Connect") {
-                        if let p = selectedPeripheral {
-                            cgmService.connect(to: p, withSN: snInput)
-                        }
-                        showSNEntry = false
-                    }
-                    .disabled(
-                        snInput.trimmingCharacters(in: .whitespacesAndNewlines).count != 6
-                    )
-                }
-            }
-        }
-    }
-
-    // MARK: – Helper Computed Properties
-
-    private var filteredPeripherals: [CGMService.Peripheral] {
-        if searchText.isEmpty {
-            return cgmService.discoveredPeripherals
-        } else {
-            return cgmService.discoveredPeripherals.filter {
-                ($0.name ?? "").localizedCaseInsensitiveContains(searchText)
-            }
-        }
-    }
-
-    private var connectionStatusText: String {
-        switch cgmService.connectionState {
-        case .disconnected:   return "Disconnected"
-        case .scanning:       return "Scanning for devices…"
-        case .connecting:     return "Connecting…"
-        case .connected:      return "Connected"
-        case .error(let msg): return msg
-        }
-    }
-
-    private var connectionStatusColor: Color {
-        switch cgmService.connectionState {
-        case .connected: return .green
-        case .error:     return .red
-        default:         return .orange
-        }
-    }
-
-    // MARK: – Trend / Color Helpers
-
-    private func glucoseColor(for value: Double) -> Color {
-        switch value {
-        case ..<70:    return .red
-        case 70..<180: return .green
-        default:       return .orange
-        }
-    }
-
-    private func trendArrow(for trend: Int) -> some View {
-        let systemName: String
-        switch trend {
-        case ..<(-2):  systemName = "arrow.down"       // Rapid fall
-        case -2:       systemName = "arrow.down.right" // Moderate fall
-        case -1:       systemName = "arrow.right"      // Slight fall
-        case 0:        systemName = "arrow.right"      // Steady
-        case 1:        systemName = "arrow.right"      // Slight rise
-        case 2:        systemName = "arrow.up.right"   // Moderate rise
-        default:       systemName = "arrow.up"         // Rapid rise / other
-        }
-        return Image(systemName: systemName)
-    }
-
-    private func trendColor(for trend: Int) -> Color {
-        switch trend {
-        case ..<(-1): return .red
-        case -1...1:  return .gray
-        default:      return .green
-        }
-    }
+enum FilterOption: String, CaseIterable, Identifiable {
+    case all = "All"
+    case today = "Today"
+    case lastWeek = "Last Week"
+    case lastMonth = "Last Month"
+    
+    var id: String { self.rawValue }
 }
 
+struct CGMView: View {
+    @EnvironmentObject var session: SessionStore
+    @ObservedObject var cgmService = CGMService(session: SessionStore())
+    @StateObject private var readingVM = CGMReadingsViewModel()
+    @State private var showPairing = false
+    @State private var filterSelection: FilterOption = .all
 
+    var filteredReadings: [FirestoreGlucoseReading] {
+        let now = Date()
+        switch filterSelection {
+        case .all:
+            return readingVM.readings
+        case .today:
+            return readingVM.readings.filter { Calendar.current.isDateInToday($0.timestamp) }
+        case .lastWeek:
+            guard let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: now) else { return [] }
+            return readingVM.readings.filter { $0.timestamp >= weekAgo }
+        case .lastMonth:
+            guard let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: now) else { return [] }
+            return readingVM.readings.filter { $0.timestamp >= monthAgo }
+        }
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
 
-
-//#Preview {
-//    let session = SessionStore()
-//    Group {
-//        ContentView()
-//            .environmentObject(MealLogViewModel(session: session))
-//            .environmentObject(HealthKitService.shared)
-//
-//        MealDetailView(
-//            meal: Meal(
-//                name: "Oatmeal with Berries",
-//                carbs: 45,
-//                protein: 5,
-//                fat: 2,
-//                fiber: 4,
-//                calories: 80,
-//                date: Date(),
-//                imageName: "oatmeal"
-//            )
-//        )
-//    }
-//}
+            // Connection status indicator
+            HStack {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.green)
+                Text("Connected")
+                    .bold()
+                Spacer()
+                // Show disconnect button if connected
+                Button(action: {
+                    cgmService.disconnect()
+                }) {
+                    Text("Disconnect")
+                        .foregroundColor(.red)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top)
+            
+            Picker("Filter", selection: $filterSelection) {
+                ForEach(FilterOption.allCases) { option in
+                    Text(option.rawValue).tag(option)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding(.horizontal)
+            
+            if filteredReadings.isEmpty {
+                Spacer()
+                Text("No glucose readings yet")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity)
+                Spacer()
+            } else {
+                Chart {
+                    ForEach(filteredReadings) { sample in
+                        LineMark(
+                            x: .value("Time", sample.timestamp),
+                            y: .value("mg/dL", sample.value)
+                        )
+                    }
+                }
+                .chartYAxis { AxisMarks(position: .leading) }
+                .chartXAxis { AxisMarks(values: .automatic) }
+                .frame(height: 300)
+                .padding(.horizontal)
+                
+                // Sort readings descending: latest first
+                let sortedReadings = filteredReadings.sorted { $0.timestamp > $1.timestamp }
+                
+                ScrollView {
+                    VStack(spacing: 12) {
+                        ForEach(Array(sortedReadings.enumerated()), id: \.element.id) { index, reading in
+                            HStack {
+                                Text(String(format: "%.1f mg/dL", reading.value))
+                                    .font(.title2)
+                                    .bold()
+                                
+                                // Compare with the next reading (chronologically earlier) if available.
+                                if index < sortedReadings.count - 1 {
+                                    let next = sortedReadings[index + 1]
+                                    if reading.value > next.value {
+                                        Image(systemName: "arrow.up")
+                                            .foregroundColor(.green)
+                                    } else if reading.value < next.value {
+                                        Image(systemName: "arrow.down")
+                                            .foregroundColor(.red)
+                                    } else {
+                                        Image(systemName: "arrow.right")
+                                            .foregroundColor(.gray)
+                                    }
+                                } else {
+                                    Image(systemName: "arrow.right")
+                                        .foregroundColor(.gray)
+                                }
+                                
+                                Spacer()
+                                
+                                Text(reading.timestamp, style: .time)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.horizontal)
+                        }
+                    }
+                }
+            }
+        }
+        .onAppear {
+            if let uid = session.userId {
+                readingVM.startListening(uid: uid)
+            }
+            if let cfg = readingVM.currentCGMConfig {
+                cgmService.attemptAutoReconnect(using: cfg)
+            }
+        }
+        .onDisappear {
+            cgmService.disconnect()
+            readingVM.stopListening()
+        }
+        .navigationTitle("CGM Data")
+    }
+}
 

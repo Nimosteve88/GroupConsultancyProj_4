@@ -45,10 +45,7 @@ struct HomeView: View {
                     }
 
                     NavigationLink(destination: CGMView()) {
-                        CombinedChartView(
-                            actual: healthKit.glucoseSamples,
-                                    predicted: advice.predictedSamples()
-                                    )
+                        CombinedChartView()
                                     .frame(height: 200)
                                     .padding(.horizontal)
                             }
@@ -107,7 +104,7 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 8) {
-                        Text(session.userEmail)
+                        Text(session.userEmail ?? "No Email")
                         Image(systemName: "person.circle.fill")
                             .onTapGesture { showProfile = true }
                     }

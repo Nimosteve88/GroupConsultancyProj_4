@@ -23,11 +23,17 @@ struct ProfileView: View {
                             Image(systemName: "person.crop.circle.fill")
                                 .font(.largeTitle)
                                 .foregroundColor(.gray)
-                            Text(session.userEmail)
+                            Text(session.userEmail ?? "Unknown Email")
                                 .font(.headline)
                         }
                         .padding(.vertical, 8)
                     }
+                    
+                    Section(header: Text("Device")) {
+                                        NavigationLink(destination: PairCGMView().environmentObject(session)) {
+                                            Label("Pair CGM Device", systemImage: "dot.radiowaves.left.and.right")
+                                        }
+                                    }
 
                     Section(header: Text("Profile Info")) {
                         HStack { Text("Age"); Spacer(); Text(viewModel.age) }

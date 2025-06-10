@@ -32,19 +32,25 @@ struct LoginView: View {
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(8)
 
-                if let error = session.authError {
+                if let error = session.errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                         .multilineTextAlignment(.center)
                 }
 
                 Button(action: {
-                    isLoading = true
-                    session.signIn(email: email, password: password)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        isLoading = true
+                        session.signIn(email: email, password: password) { result in
                         isLoading = false
-                    }
-                }) {
+                        switch result {
+                                case .success:
+                                // nothing extra to do here; auth listener handles state
+                                break
+                                case .failure(let error):
+                                    print("Login failed: \(error.localizedDescription)")
+                                    }
+                                }
+                    })  {
                     if isLoading {
                         ProgressView()
                     } else {

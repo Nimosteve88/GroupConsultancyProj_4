@@ -10,6 +10,7 @@ import Combine
 import CoreBluetooth
 import HealthKit
 import CGMBLEKit
+import FirebaseFirestore
 
 // MARK: – Connection State
 
@@ -43,25 +44,28 @@ final class CGMService: NSObject, ObservableObject {
     @MainActor @Published var connectionState: ConnectionState = .disconnected
     @MainActor @Published var lastError: String?
     @MainActor @Published var glucoseReadings: [GlucoseReading] = []
+    private let session: SessionStore
+
 
     // MARK: – Private Bluetooth/Transmitter State
 
-    private var centralManager: CBCentralManager!
+    var centralManager: CBCentralManager!
     private var transmitter: Transmitter?
     private var connectionAttempts = 0
     private let maxConnectionAttempts = 3
 
     // MARK: – Configuration State
 
-    private var pendingSN: String?
-    private var selectedPeripheralID: UUID?
+    var pendingSN: String?
+    var selectedPeripheralID: UUID?
 
     // MARK: – Initialization
 
-    override init() {
-        super.init()
-        // Use main queue so we can update Published properties directly
-        centralManager = CBCentralManager(delegate: self, queue: .main)
+    init(session: SessionStore) {
+            self.session = session
+            super.init()
+            // Use main queue so we can update Published properties directly
+            centralManager = CBCentralManager(delegate: self, queue: .main)
     }
 
     // MARK: – Public Methods
@@ -165,6 +169,25 @@ final class CGMService: NSObject, ObservableObject {
         )
 
         print("New glucose reading: \(newReading.value) at \(newReading.timestamp)")
+        
+        // Add to newReading to Firestore under users/{uid}/glucoseReadings
+        
+        guard let uid = session.userId else { return }
+        let data: [String: Any] = [
+                    "timestamp": Timestamp(date: newReading.timestamp),
+                    "value": newReading.value,
+                ]
+        Firestore.firestore()
+                .collection("users")
+                .document(uid)
+                .collection("glucoseReadings")
+                .addDocument(data: data) { error in
+                    if let error = error {
+                        print("Error writing glucose reading: \(error)")
+                    }
+                }
+        print("Wrote glucose reading to Firestore: \(newReading.value) at \(newReading.timestamp)")
+        
 
         // Keep only last 24h, most recent first
         Task { @MainActor in
