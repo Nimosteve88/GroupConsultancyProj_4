@@ -7,28 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C5702FD2DFC6D070080FD97 /* CGMBLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA12DEE60780052E21B /* CGMBLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5702FE2DFC6D070080FD97 /* CGMBLEKitUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA22DEE60780052E21B /* CGMBLEKitUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5702FF2DFC6D070080FD97 /* LoopKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA32DEE60780052E21B /* LoopKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5703002DFC6D070080FD97 /* LoopKitUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA42DEE60780052E21B /* LoopKitUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5703012DFC6D070080FD97 /* ShareClient.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA82DEE60780052E21B /* ShareClient.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5703022DFC6D070080FD97 /* ShareClientUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA92DEE60780052E21B /* ShareClientUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D73F2DEE60D50052E21B /* CGMBLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA12DEE60780052E21B /* CGMBLEKit.xcframework */; };
-		0CC8D7402DEE60D50052E21B /* CGMBLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA12DEE60780052E21B /* CGMBLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D7412DEE60D50052E21B /* CGMBLEKitUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA22DEE60780052E21B /* CGMBLEKitUI.xcframework */; };
-		0CC8D7422DEE60D50052E21B /* CGMBLEKitUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA22DEE60780052E21B /* CGMBLEKitUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D7432DEE60D50052E21B /* LoopKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA32DEE60780052E21B /* LoopKit.xcframework */; };
-		0CC8D7442DEE60D50052E21B /* LoopKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA32DEE60780052E21B /* LoopKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D7452DEE60D50052E21B /* LoopKitUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA42DEE60780052E21B /* LoopKitUI.xcframework */; };
-		0CC8D7462DEE60D50052E21B /* LoopKitUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA42DEE60780052E21B /* LoopKitUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0CC8D7472DEE60D50052E21B /* LoopTestingKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA52DEE60780052E21B /* LoopTestingKit.xcframework */; };
-		0CC8D7482DEE60D50052E21B /* LoopTestingKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA52DEE60780052E21B /* LoopTestingKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0CC8D7492DEE60D50052E21B /* MockKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA62DEE60780052E21B /* MockKit.xcframework */; };
-		0CC8D74A2DEE60D50052E21B /* MockKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA62DEE60780052E21B /* MockKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0CC8D74B2DEE60D50052E21B /* MockKitUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA72DEE60780052E21B /* MockKitUI.xcframework */; };
-		0CC8D74C2DEE60D50052E21B /* MockKitUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA72DEE60780052E21B /* MockKitUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D74D2DEE60D50052E21B /* ShareClient.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA82DEE60780052E21B /* ShareClient.xcframework */; };
-		0CC8D74E2DEE60D50052E21B /* ShareClient.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA82DEE60780052E21B /* ShareClient.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CC8D74F2DEE60D50052E21B /* ShareClientUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA92DEE60780052E21B /* ShareClientUI.xcframework */; };
-		0CC8D7502DEE60D50052E21B /* ShareClientUI.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CC8CCA92DEE60780052E21B /* ShareClientUI.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CF45DCF2DDDED6C00D98FA1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CF45DCE2DDDED6B00D98FA1 /* GoogleService-Info.plist */; };
 		0CF45DD22DDDFD0700D98FA1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0CF45DD12DDDFD0700D98FA1 /* FirebaseAuth */; };
 		0CF45DD42DDDFD0700D98FA1 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0CF45DD32DDDFD0700D98FA1 /* FirebaseCore */; };
 		0CF45DD62DDDFD0700D98FA1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0CF45DD52DDDFD0700D98FA1 /* FirebaseFirestore */; };
+		589A764394E6AF06CEEF6580 /* Pods_type2DProj.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED1530B766AFEECB47778CC /* Pods_type2DProj.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,15 +33,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0CC8D74E2DEE60D50052E21B /* ShareClient.xcframework in Embed Frameworks */,
-				0CC8D74A2DEE60D50052E21B /* MockKit.xcframework in Embed Frameworks */,
-				0CC8D7462DEE60D50052E21B /* LoopKitUI.xcframework in Embed Frameworks */,
-				0CC8D7502DEE60D50052E21B /* ShareClientUI.xcframework in Embed Frameworks */,
-				0CC8D7482DEE60D50052E21B /* LoopTestingKit.xcframework in Embed Frameworks */,
-				0CC8D74C2DEE60D50052E21B /* MockKitUI.xcframework in Embed Frameworks */,
-				0CC8D7422DEE60D50052E21B /* CGMBLEKitUI.xcframework in Embed Frameworks */,
-				0CC8D7402DEE60D50052E21B /* CGMBLEKit.xcframework in Embed Frameworks */,
-				0CC8D7442DEE60D50052E21B /* LoopKit.xcframework in Embed Frameworks */,
+				0C5702FD2DFC6D070080FD97 /* CGMBLEKit.xcframework in Embed Frameworks */,
+				0C5702FE2DFC6D070080FD97 /* CGMBLEKitUI.xcframework in Embed Frameworks */,
+				0C5702FF2DFC6D070080FD97 /* LoopKit.xcframework in Embed Frameworks */,
+				0C5703002DFC6D070080FD97 /* LoopKitUI.xcframework in Embed Frameworks */,
+				0C5703012DFC6D070080FD97 /* ShareClient.xcframework in Embed Frameworks */,
+				0C5703022DFC6D070080FD97 /* ShareClientUI.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2424,6 +2416,9 @@
 		0CC8D6B02DEE60780052E21B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0CC8D6B12DEE60780052E21B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0CF45DCE2DDDED6B00D98FA1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B1B02BCC4482F2F94094BD2 /* Pods-type2DProj.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-type2DProj.debug.xcconfig"; path = "Target Support Files/Pods-type2DProj/Pods-type2DProj.debug.xcconfig"; sourceTree = "<group>"; };
+		3ED1530B766AFEECB47778CC /* Pods_type2DProj.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_type2DProj.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF85EA474EE65694BE9E5F51 /* Pods-type2DProj.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-type2DProj.release.xcconfig"; path = "Target Support Files/Pods-type2DProj/Pods-type2DProj.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -2454,16 +2449,14 @@
 			files = (
 				0CC8D74F2DEE60D50052E21B /* ShareClientUI.xcframework in Frameworks */,
 				0CF45DD42DDDFD0700D98FA1 /* FirebaseCore in Frameworks */,
-				0CC8D7472DEE60D50052E21B /* LoopTestingKit.xcframework in Frameworks */,
 				0CF45DD22DDDFD0700D98FA1 /* FirebaseAuth in Frameworks */,
-				0CC8D7492DEE60D50052E21B /* MockKit.xcframework in Frameworks */,
 				0CC8D7432DEE60D50052E21B /* LoopKit.xcframework in Frameworks */,
 				0CC8D7412DEE60D50052E21B /* CGMBLEKitUI.xcframework in Frameworks */,
 				0CC8D73F2DEE60D50052E21B /* CGMBLEKit.xcframework in Frameworks */,
 				0CC8D7452DEE60D50052E21B /* LoopKitUI.xcframework in Frameworks */,
-				0CC8D74B2DEE60D50052E21B /* MockKitUI.xcframework in Frameworks */,
 				0CC8D74D2DEE60D50052E21B /* ShareClient.xcframework in Frameworks */,
 				0CF45DD62DDDFD0700D98FA1 /* FirebaseFirestore in Frameworks */,
+				589A764394E6AF06CEEF6580 /* Pods_type2DProj.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2477,6 +2470,7 @@
 				0C06F1A52DD6329300414112 /* type2DProj */,
 				0CC8CC902DEE60150052E21B /* Frameworks */,
 				0C06F1A42DD6329300414112 /* Products */,
+				F0285FFED9AE0A56E1E1182B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2502,6 +2496,7 @@
 				0CC8CC9A2DEE60160052E21B /* MockKitUI.xcframework */,
 				0CC8CC9B2DEE60160052E21B /* ShareClient.xcframework */,
 				0CC8CC912DEE60160052E21B /* ShareClientUI.xcframework */,
+				3ED1530B766AFEECB47778CC /* Pods_type2DProj.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -5634,6 +5629,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F0285FFED9AE0A56E1E1182B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2B1B02BCC4482F2F94094BD2 /* Pods-type2DProj.debug.xcconfig */,
+				FF85EA474EE65694BE9E5F51 /* Pods-type2DProj.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -5641,6 +5645,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C06F1AE2DD6329600414112 /* Build configuration list for PBXNativeTarget "type2DProj" */;
 			buildPhases = (
+				D6B1BEB2FEBFEC974AAD5F85 /* [CP] Check Pods Manifest.lock */,
 				0C06F19F2DD6329300414112 /* Sources */,
 				0C06F1A02DD6329300414112 /* Frameworks */,
 				0C06F1A12DD6329300414112 /* Resources */,
@@ -5671,7 +5676,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1630;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					0C06F1A22DD6329300414112 = {
 						CreatedOnToolsVersion = 16.3;
@@ -5731,12 +5736,12 @@
 					ProjectRef = 0CC8CED92DEE60780052E21B /* LoopKit.xcodeproj */;
 				},
 				{
-					ProductGroup = 0CC8D6A82DEE60780052E21B /* Products */;
-					ProjectRef = 0CC8D4892DEE60780052E21B /* ShareClient.xcodeproj */;
-				},
-				{
 					ProductGroup = 0CC8D6A02DEE60780052E21B /* Products */;
 					ProjectRef = 0CC8CF1E2DEE60780052E21B /* ShareClient.xcodeproj */;
+				},
+				{
+					ProductGroup = 0CC8D6A82DEE60780052E21B /* Products */;
+					ProjectRef = 0CC8D4892DEE60780052E21B /* ShareClient.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -5756,6 +5761,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D6B1BEB2FEBFEC974AAD5F85 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-type2DProj-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0C06F19F2DD6329300414112 /* Sources */ = {
@@ -6711,6 +6741,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -6741,6 +6772,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = P2UFNGVF24;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -6762,6 +6794,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -6774,6 +6807,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -6804,6 +6838,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = P2UFNGVF24;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -6819,6 +6854,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				NEW_SETTING = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -6827,13 +6863,13 @@
 		};
 		0C06F1AF2DD6329600414112 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B1B02BCC4482F2F94094BD2 /* Pods-type2DProj.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = type2DProj/type2DProj.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P2UFNGVF24;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = type2DProj/Info.plist;
@@ -6859,13 +6895,13 @@
 		};
 		0C06F1B02DD6329600414112 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF85EA474EE65694BE9E5F51 /* Pods-type2DProj.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = type2DProj/type2DProj.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P2UFNGVF24;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = type2DProj/Info.plist;

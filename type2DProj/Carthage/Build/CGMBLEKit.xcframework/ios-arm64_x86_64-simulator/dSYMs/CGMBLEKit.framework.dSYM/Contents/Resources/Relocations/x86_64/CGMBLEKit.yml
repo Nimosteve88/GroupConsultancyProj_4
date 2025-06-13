@@ -570,9 +570,9 @@ relocations:
   - { offset: 0xB9354, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit16BluetoothManagerCfD', symObjAddr: 0x1FF0, symBinAddr: 0x1E350, symSize: 0x30 }
   - { offset: 0xB9601, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit23TransmitterManagerStateV7versionSivpZ', symObjAddr: 0x70B0, symBinAddr: 0x2DD70, symSize: 0x0 }
   - { offset: 0xB961C, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G5CGMManagerC17managerIdentifierSSvpZ', symObjAddr: 0x7AD0, symBinAddr: 0x36AE8, symSize: 0x0 }
-  - { offset: 0xB9637, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G5CGMManagerC14localizedTitleSSvpZ', symObjAddr: 0x24990, symBinAddr: 0x3AD20, symSize: 0x0 }
+  - { offset: 0xB9637, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G5CGMManagerC14localizedTitleSSvpZ', symObjAddr: 0x24998, symBinAddr: 0x3AD20, symSize: 0x0 }
   - { offset: 0xB9652, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G6CGMManagerC17managerIdentifierSSvpZ', symObjAddr: 0x7AE0, symBinAddr: 0x36AF8, symSize: 0x0 }
-  - { offset: 0xB966D, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G6CGMManagerC14localizedTitleSSvpZ', symObjAddr: 0x249A0, symBinAddr: 0x3AD30, symSize: 0x0 }
+  - { offset: 0xB966D, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit12G6CGMManagerC14localizedTitleSSvpZ', symObjAddr: 0x249A8, symBinAddr: 0x3AD30, symSize: 0x0 }
   - { offset: 0xB96EF, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit16CalibrationStateO20localizedDescriptionSSvg', symObjAddr: 0x0, symBinAddr: 0x20800, symSize: 0x310 }
   - { offset: 0xB99D4, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit23TransmitterManagerStateV7versionSivau', symObjAddr: 0x3F0, symBinAddr: 0x20BB0, symSize: 0x10 }
   - { offset: 0xBA514, size: 0x8, addend: 0x0, symName: '_$s9CGMBLEKit18TransmitterManagerC16latestConnection10Foundation4DateVSgvpACTK', symObjAddr: 0x1A50, symBinAddr: 0x221B0, symSize: 0x90 }

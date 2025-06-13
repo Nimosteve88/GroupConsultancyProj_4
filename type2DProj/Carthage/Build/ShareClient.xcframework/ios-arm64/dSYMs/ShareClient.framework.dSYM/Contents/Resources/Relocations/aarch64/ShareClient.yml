@@ -84,7 +84,7 @@ relocations:
   - { offset: 0x6332D, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC7LoopKit10CGMManagerAadEP20fetchNewDataIfNeededyyyAD9CGMResultOcFTW', symObjAddr: 0x1B18, symBinAddr: 0x5A1C, symSize: 0x4 }
   - { offset: 0x6338D, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerCs28CustomDebugStringConvertibleAAsADP16debugDescriptionSSvgTW', symObjAddr: 0x1D4C, symBinAddr: 0x5A24, symSize: 0x20 }
   - { offset: 0x634F3, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleC4main_WZ', symObjAddr: 0x0, symBinAddr: 0x66FC, symSize: 0x50 }
-  - { offset: 0x63517, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleC4mainSo8NSBundleCvpZ', symObjAddr: 0x18C8, symBinAddr: 0x15BF0, symSize: 0x0 }
+  - { offset: 0x63517, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleC4mainSo8NSBundleCvpZ', symObjAddr: 0x18D0, symBinAddr: 0x15BF0, symSize: 0x0 }
   - { offset: 0x63525, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleC4main_WZ', symObjAddr: 0x0, symBinAddr: 0x66FC, symSize: 0x50 }
   - { offset: 0x63578, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleCMa', symObjAddr: 0x60, symBinAddr: 0x675C, symSize: 0x20 }
   - { offset: 0x635E3, size: 0x8, addend: 0x0, symName: '_$s11ShareClient15FrameworkBundleCfD', symObjAddr: 0x50, symBinAddr: 0x674C, symSize: 0x10 }

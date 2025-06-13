@@ -1,33 +1,33 @@
 {
-  "commitish" : "v1.2",
   "iOS" : [
     {
-      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
-      "name" : "ShareClient",
-      "identifier" : "ios-arm64",
       "container" : "ShareClient.xcframework",
-      "hash" : "93f65ec2c2d5af26293253fd0a2661c2cd83aaa4813174cc29bd3e865780061d"
-    },
-    {
       "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
-      "name" : "ShareClient",
-      "identifier" : "ios-arm64_x86_64-simulator",
-      "container" : "ShareClient.xcframework",
-      "hash" : "1882906d22cdf6a6cdd2ef04666bce6455301acc630d2a0c90fcb86077f0c955"
-    },
-    {
-      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
-      "name" : "ShareClientUI",
       "identifier" : "ios-arm64",
-      "container" : "ShareClientUI.xcframework",
-      "hash" : "3a66f3a7cba148a12d017942a454914840d4ca73756f28e424fc235195661c90"
+      "hash" : "93f65ec2c2d5af26293253fd0a2661c2cd83aaa4813174cc29bd3e865780061d",
+      "name" : "ShareClient"
     },
     {
+      "container" : "ShareClient.xcframework",
       "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
-      "name" : "ShareClientUI",
       "identifier" : "ios-arm64_x86_64-simulator",
+      "hash" : "f463035057a6e219f453764743ef006a448840550fea7783872ebe141945f193",
+      "name" : "ShareClient"
+    },
+    {
       "container" : "ShareClientUI.xcframework",
-      "hash" : "210f46552f84d7d4579492a2cea4d8664aa4d0229ff954b58dced0e047fcdbad"
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "identifier" : "ios-arm64",
+      "hash" : "3a66f3a7cba148a12d017942a454914840d4ca73756f28e424fc235195661c90",
+      "name" : "ShareClientUI"
+    },
+    {
+      "container" : "ShareClientUI.xcframework",
+      "swiftToolchainVersion" : "6.1.2 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)",
+      "identifier" : "ios-arm64_x86_64-simulator",
+      "hash" : "13a91ac1a96c86e65b16d5f194ac8f70735ee53bba16f3c0721cc63874601c74",
+      "name" : "ShareClientUI"
     }
-  ]
+  ],
+  "commitish" : "v1.2"
 }

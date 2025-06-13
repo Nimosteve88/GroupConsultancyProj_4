@@ -1,0 +1,6 @@
+framework module Pods_type2DProj {
+  umbrella header "Pods-type2DProj-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -53,6 +53,9 @@ struct CGMView: View {
                 // Show disconnect button if connected
                 Button(action: {
                     cgmService.disconnect()
+                    // Go back to pairing view
+                    showPairing = true
+                    
                 }) {
                     Text("Disconnect")
                         .foregroundColor(.red)
@@ -129,6 +132,8 @@ struct CGMView: View {
                     }
                 }
             }
+            NavigationLink(destination: PairCGMView().environmentObject(session),
+                           isActive: $showPairing) { EmptyView() }
         }
         .onAppear {
             if let uid = session.userId {
@@ -138,10 +143,10 @@ struct CGMView: View {
                 cgmService.attemptAutoReconnect(using: cfg)
             }
         }
-        .onDisappear {
-            cgmService.disconnect()
-            readingVM.stopListening()
-        }
+//        .onDisappear {
+//            cgmService.disconnect()
+//            readingVM.stopListening()
+//        }
         .navigationTitle("CGM Data")
     }
 }

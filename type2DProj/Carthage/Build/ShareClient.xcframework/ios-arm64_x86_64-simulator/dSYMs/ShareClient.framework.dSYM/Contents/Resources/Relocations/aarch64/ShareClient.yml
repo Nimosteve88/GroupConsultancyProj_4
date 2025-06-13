@@ -16,7 +16,7 @@ relocations:
   - { offset: 0x613FE, size: 0x8, addend: 0x0, symName: '_$s11ShareClientAAC5token33_FEBC17F440D519F8DCC2366C0FC72C82LLSSSgvpfi', symObjAddr: 0x1FC, symBinAddr: 0x14D4, symSize: 0xC }
   - { offset: 0x61469, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0A7ServiceC5titleSSvpfi', symObjAddr: 0x208, symBinAddr: 0x14E0, symSize: 0xC8 }
   - { offset: 0x616E7, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC17managerIdentifierSSvpZ', symObjAddr: 0x2970, symBinAddr: 0x109D8, symSize: 0x0 }
-  - { offset: 0x61701, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC14localizedTitleSSvpZ', symObjAddr: 0x10490, symBinAddr: 0x11258, symSize: 0x0 }
+  - { offset: 0x61701, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC14localizedTitleSSvpZ', symObjAddr: 0x10498, symBinAddr: 0x11258, symSize: 0x0 }
   - { offset: 0x6170F, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC17managerIdentifierSSvau', symObjAddr: 0x0, symBinAddr: 0x15A8, symSize: 0xC }
   - { offset: 0x61CD5, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC14localizedTitle_WZ', symObjAddr: 0x5F0, symBinAddr: 0x1B10, symSize: 0xCC }
   - { offset: 0x61D3E, size: 0x8, addend: 0x0, symName: '_$s11ShareClient0aB7ManagerC14localizedTitleSSvau', symObjAddr: 0x6BC, symBinAddr: 0x1BDC, symSize: 0x40 }

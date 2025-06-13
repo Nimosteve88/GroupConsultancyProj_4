@@ -18,11 +18,11 @@
 		</data>
 		<key>Modules/MockKit.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		c6LvUfvPd0Ht68aCyQeHIXw97Oo=
+		uXhF0lFOAJeJ5qvJuB2mo8JdKco=
 		</data>
 		<key>Modules/MockKit.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		sKOx8F8sZG+mZZsJFoDKaSxe+V0=
+		pVL/eGDL0euPRRqmvrf22pbb+p8=
 		</data>
 		<key>Modules/MockKit.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -73,14 +73,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rMEId5fTI8ovm7YkMN09PI4UTMA49a3SdJJmn4QyFWE=
+			CVkMRd2ToMtZlAEExqbxUAq+EU1oOD9/ziVeHqeRi+c=
 			</data>
 		</dict>
 		<key>Modules/MockKit.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oAqOcPqsX63HPju3NZHayWtZ3dHr4TWK9FYAToQMPFQ=
+			Dw2ciII3buZHSW4frTXNL+JryAENdNqf1yR8Dx34Ghs=
 			</data>
 		</dict>
 		<key>Modules/MockKit.swiftmodule/arm64-apple-ios-simulator.abi.json</key>

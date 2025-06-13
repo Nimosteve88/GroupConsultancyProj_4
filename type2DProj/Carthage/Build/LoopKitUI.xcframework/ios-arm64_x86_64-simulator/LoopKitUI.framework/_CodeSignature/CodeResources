@@ -62,7 +62,7 @@
 		</data>
 		<key>DateAndDurationTableViewCell.nib/runtime.nib</key>
 		<data>
-		AQBBK0Z8KZehu/U9eNoMU+jZAaI=
+		X1dJeWoKsqXtV/v6KjIJzbuIOUM=
 		</data>
 		<key>DecimalTextFieldTableViewCell.nib</key>
 		<data>
@@ -126,11 +126,11 @@
 		</data>
 		<key>Modules/LoopKitUI.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		B6arGC96oGtZPh6bRZEjc0yT3xw=
+		GUYt0z6u+/Xo7Ddt0nOxGcPktmI=
 		</data>
 		<key>Modules/LoopKitUI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		deaW4qvW4NtLLpFPKgQoWIjp04o=
+		/Pgzh31mYQNBw+U9NX8cJJ4+LEU=
 		</data>
 		<key>Modules/LoopKitUI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -202,7 +202,7 @@
 		</data>
 		<key>RepeatingScheduleValueTableViewCell.nib/runtime.nib</key>
 		<data>
-		oITyc379luzGRWAZYoD4bgfI8IQ=
+		gNs1sKK1RSg46URN+X5iiccvsm4=
 		</data>
 		<key>ReservoirVolumeHUDView.nib</key>
 		<data>
@@ -771,7 +771,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			OozNEEXNbKHK2xmj3/GKqgi7J6ko5Mlnxnqhse2+4CU=
+			yK5tjyrwft1crAopkQNvlF7JCvYGg/NRiTzydCaeoLc=
 			</data>
 		</dict>
 		<key>DecimalTextFieldTableViewCell.nib</key>
@@ -876,14 +876,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yCwKi+NtU43z6xpPOQYhZOP93wZJajv3XSWEk4nhW0g=
+			WiT4m/dcfQYYmwBpywSrh+BU4HZYQR4PyXnMfnTa88s=
 			</data>
 		</dict>
 		<key>Modules/LoopKitUI.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			9Paxt6iPNxIuE8KdrXwwxYf3Cwi8xASH1CEhbvAumbU=
+			UwStAsc5TNwTw7Dcy/V5Aakwguz+w9c8IogK5qx3mWo=
 			</data>
 		</dict>
 		<key>Modules/LoopKitUI.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -1009,7 +1009,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			mLlaqxx8UAMtGDsGye4sdOx+QVMaAEPnjm9ibmgnYNY=
+			mWC1LRSkw6IFOPCNmC1C+Y7j1kW43rwGYJwYhiVclyI=
 			</data>
 		</dict>
 		<key>ReservoirVolumeHUDView.nib</key>
