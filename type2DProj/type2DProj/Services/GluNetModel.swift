@@ -5,6 +5,7 @@
 //  Created by Nimo, Steve on 13/06/2025.
 //
 
+
 import Foundation
 import TensorFlowLite
 import Accelerate
@@ -20,8 +21,6 @@ final class GluNetModel {
   private let carbStd: Float =  50.0
   private let insulinMean: Float = 1.0
   private let insulinStd: Float = 1.0
-  private let timeMean: Float = 15.0   // minutes
-  private let timeStd: Float = 15.0
 
   /// Initialize interpreter with the bundled `glunet.tflite` model.
   init?() {
@@ -64,12 +63,20 @@ final class GluNetModel {
     return out
   }
 
+  /// Normalizes time to 0-1 range where 0 is 00:00 and 1 is 23:59
+  private func normalizeTime(_ date: Date) -> Float {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.hour, .minute], from: date)
+    let totalMinutes = Float(components.hour! * 60 + components.minute!)
+    return totalMinutes / (24 * 60) // Normalize to 0-1 range
+  }
+
   /// Predicts 30-min CGM ahead from 16-step window.
   func predict(
     glucose: [Float],
     carbs: [Float],
     insulin: [Float],
-    times: [Float]
+    times: [Date]
   ) -> Float? {
     // Validate lengths
     guard glucose.count == 16, times.count == 16 else { return nil }
@@ -82,7 +89,7 @@ final class GluNetModel {
     let gNorm = normalize(glucose, mean: glucoseMean, std: glucoseStd)
     let cNorm = normalize(carb16, mean: carbMean, std: carbStd)
     let iNorm = normalize(ins16, mean: insulinMean, std: insulinStd)
-    let tNorm = normalize(times, mean: timeMean, std: timeStd)
+    let tNorm = times.map { normalizeTime($0) }
 
     // Build input tensor [1,16,4]
     var input = [Float](); input.reserveCapacity(64)

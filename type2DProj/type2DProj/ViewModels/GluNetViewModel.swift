@@ -84,12 +84,11 @@ final class GluNetViewModel: ObservableObject {
         }.reversed()
 
         let glucose16 = readings.map { $0.0 }
-        let base = readings.first!.1.timeIntervalSince1970
-        let times16 = readings.map { Float(($0.1.timeIntervalSince1970 - base)/60) }
+        let times16 = readings.map { $0.1 }
 
         // Debug logs
-        print("[GluNetViewModel] glucose16[0]=\(glucose16.first!), carbs16[0]=\(carbs16.first!), insulin16[0]=\(insulin16.first!), times16[0]=\(times16.first!)")
-
+        print("[GluNetViewModel] glucose16 = \(glucose16)\ncarbs16 = \(carbs16)\ninsulin16 = \(insulin16)\ntimes16 = \(times16)")
+          
         // Run prediction off main
         Task.detached {
           print("[GluNetViewModel] running model...")
