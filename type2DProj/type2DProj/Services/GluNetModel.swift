@@ -9,81 +9,99 @@ import Foundation
 import TensorFlowLite
 import Accelerate
 
-/// Encapsulates loading and inference for the GluNet TFLite model.
+/// Encapsulates loading, preprocessing, and inference for the GluNet TFLite model.
 final class GluNetModel {
   private var interpreter: Interpreter
 
+  // Normalization parameters (from model training)
+  private let glucoseMean: Float = 100.0
+  private let glucoseStd: Float = 50.0
+  private let carbMean: Float =  50.0
+  private let carbStd: Float =  50.0
+  private let insulinMean: Float = 1.0
+  private let insulinStd: Float = 1.0
+  private let timeMean: Float = 15.0   // minutes
+  private let timeStd: Float = 15.0
+
   /// Initialize interpreter with the bundled `glunet.tflite` model.
   init?() {
-    guard let modelPath = Bundle.main.path(forResource: "glunet", ofType: "tflite") else {
-      print("Failed to find glunet.tflite in bundle")
+    print("[GluNetModel] Initializing interpreter...")
+    guard let path = Bundle.main.path(forResource: "glunet", ofType: "tflite") else {
+      print("[GluNetModel] ERROR: glunet.tflite not found")
       return nil
     }
     do {
-      interpreter = try Interpreter(modelPath: modelPath)
+      interpreter = try Interpreter(modelPath: path)
       try interpreter.allocateTensors()
+      print("[GluNetModel] Interpreter allocated successfully")
     } catch {
-      print("Error creating TensorFlowLite interpreter: \(error)")
+      print("[GluNetModel] ERROR creating Interpreter: \(error)")
       return nil
     }
+  }
+
+  /// Standardizes array to zero-mean, unit-variance.
+  private func normalize(_ values: [Float], mean: Float, std: Float) -> [Float] {
+    return values.map { ($0 - mean) / std }
+  }
+
+  /// Denormalizes single value from zero-mean, unit-variance back.
+  private func denormalize(_ value: Float, mean: Float, std: Float) -> Float {
+    return value * std + mean
   }
 
   /// Linear interpolation of `values` to `outputLength` points.
   private func interpolate(_ values: [Float], to outputLength: Int) -> [Float] {
-    let inputCount = values.count
-    guard inputCount > 1, outputLength > 1 else {
-      return values
-    }
-    var result = [Float](repeating: 0, count: outputLength)
+    let n = values.count
+    guard n > 1, outputLength > 1 else { return values }
+    var out = [Float](repeating: 0, count: outputLength)
     for i in 0..<outputLength {
-      let t = Float(i) * Float(inputCount - 1) / Float(outputLength - 1)
-      let idx = Int(t)
+      let t = Float(i) * Float(n - 1) / Float(outputLength - 1)
+      let idx = Int(t), nxt = min(idx + 1, n - 1)
       let frac = t - Float(idx)
-      let next = min(idx + 1, inputCount - 1)
-      result[i] = values[idx] * (1 - frac) + values[next] * frac
+      out[i] = values[idx] * (1 - frac) + values[nxt] * frac
     }
-    return result
+    return out
   }
 
-  /// Run a 16×4 inference: CGM, carbs, insulin, time for last 16 steps.
+  /// Predicts 30-min CGM ahead from 16-step window.
   func predict(
     glucose: [Float],
     carbs: [Float],
     insulin: [Float],
     times: [Float]
   ) -> Float? {
-    // Must have exactly 16 glucose points
-    guard glucose.count == 16,
-          times.count == 16 else {
-      return nil
-    }
-    // Interpolate carbs & insulin to 16 points
+    // Validate lengths
+    guard glucose.count == 16, times.count == 16 else { return nil }
+
+    // Interpolate carb & insulin curves
     let carb16 = interpolate(carbs, to: 16)
-    let ins16 = interpolate(insulin, to: 16)
+    let ins16  = interpolate(insulin, to: 16)
+
+    // Normalize each channel
+    let gNorm = normalize(glucose, mean: glucoseMean, std: glucoseStd)
+    let cNorm = normalize(carb16, mean: carbMean, std: carbStd)
+    let iNorm = normalize(ins16, mean: insulinMean, std: insulinStd)
+    let tNorm = normalize(times, mean: timeMean, std: timeStd)
 
     // Build input tensor [1,16,4]
-    var inputData = [Float]()
-    inputData.reserveCapacity(16 * 4)
+    var input = [Float](); input.reserveCapacity(64)
     for i in 0..<16 {
-      inputData.append(glucose[i])
-      inputData.append(carb16[i])
-      inputData.append(ins16[i])
-      inputData.append(times[i])
+      input += [ gNorm[i], cNorm[i], iNorm[i], tNorm[i] ]
     }
-
-    // Convert [Float] to Data
-    let data = inputData.withUnsafeBufferPointer { buf in
-      Data(buffer: buf)
-    }
+    let inputData = input.withUnsafeBufferPointer { Data(buffer: $0) }
 
     do {
-      try interpreter.copy(data, toInputAt: 0)
+      try interpreter.copy(inputData, toInputAt: 0)
       try interpreter.invoke()
-      let outputTensor = try interpreter.output(at: 0)
-      let outputFloats: [Float] = outputTensor.data.toArray(type: Float.self)
-      return outputFloats.first
+      let output = try interpreter.output(at: 0)
+      let raw = output.data.toArray(type: Float.self).first ?? 0
+      // De-normalize prediction back to mg/dL
+      let denorm = denormalize(raw, mean: glucoseMean, std: glucoseStd)
+      print("[GluNetModel] raw pred=\(raw), denorm=\(denorm)")
+      return denorm
     } catch {
-      print("TensorFlowLite invocation error: \(error)")
+      print("[GluNetModel] Inference error: \(error)")
       return nil
     }
   }

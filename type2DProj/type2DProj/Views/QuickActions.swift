@@ -19,6 +19,7 @@ struct PressableButtonStyle: ButtonStyle {
 
 struct QuickActions: View {
     @EnvironmentObject var mealLog: MealLogViewModel
+    @EnvironmentObject var session: SessionStore
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
@@ -30,11 +31,10 @@ struct QuickActions: View {
             }
             .buttonStyle(PressableButtonStyle())
 
-            // Daily Meal Plan
-            Button(action: {
-                // TODO: show Daily Meal Plan
-            }) {
-                ActionButton(label: "Daily Meal Plan", icon: "list.bullet")
+            // AI Prediction
+            NavigationLink(destination: PredictionView()
+                            .environmentObject(session)) {
+                ActionButton(label: "AI Prediction", icon: "waveform.path.ecg")
             }
             .buttonStyle(PressableButtonStyle())
 
@@ -48,11 +48,7 @@ struct QuickActions: View {
 
             // Copilot
             NavigationLink(destination: ChatView()) {
-                ActionButton(
-                    label: "Copilot",
-                    icon: "bubble.left.and.bubble.right.fill",
-                    badge: 4
-                )
+                ActionButton(label: "Copilot", icon: "bubble.left.and.bubble.right.fill", badge: 4)
             }
             .buttonStyle(PressableButtonStyle())
         }
@@ -60,9 +56,9 @@ struct QuickActions: View {
     }
 }
 
+//#Preview {
+//    QuickActions()
+//        .environmentObject(MealLogViewModel(session: SessionStore()))
+//        .environmentObject(SessionStore())
+//}
 
-#Preview {
-    let session = SessionStore()
-    QuickActions()
-        .environmentObject(MealLogViewModel(session: session))
-}
