@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import FirebaseFirestore
 
 enum FilterOption: String, CaseIterable, Identifiable {
     case all = "All"
@@ -24,7 +25,7 @@ struct CGMView: View {
     @State private var showPairing = false
     @State private var filterSelection: FilterOption = .all
 
-    var filteredReadings: [FirestoreGlucoseReading] {
+    private var filteredReadings: [FirestoreGlucoseReading] {
         let now = Date()
         switch filterSelection {
         case .all:
@@ -42,20 +43,31 @@ struct CGMView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-
-            // Connection status indicator
+            // Connection status + Disconnect
             HStack {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundColor(.green)
                 Text("Connected")
                     .bold()
                 Spacer()
-                // Show disconnect button if connected
                 Button(action: {
+                    // 1) Remove saved CGM config from Firestore
+                    if let uid = session.userId {
+                        Firestore.firestore()
+                            .collection("users")
+                            .document(uid)
+                            .collection("cgmConfig")
+                            .document("info")
+                            .delete { error in
+                                if let error = error {
+                                    print("Error deleting CGM config: \(error)")
+                                }
+                            }
+                    }
+                    // 2) Disconnect BLE service
                     cgmService.disconnect()
-                    // Go back to pairing view
+                    // 3) Show pairing screen again
                     showPairing = true
-                    
                 }) {
                     Text("Disconnect")
                         .foregroundColor(.red)
@@ -63,7 +75,15 @@ struct CGMView: View {
             }
             .padding(.horizontal)
             .padding(.top)
+            // Hidden navigation link to PairCGMView
+            NavigationLink(
+                destination: PairCGMView().environmentObject(session),
+                isActive: $showPairing
+            ) {
+                EmptyView()
+            }
             
+            // Filter selector
             Picker("Filter", selection: $filterSelection) {
                 ForEach(FilterOption.allCases) { option in
                     Text(option.rawValue).tag(option)
@@ -72,6 +92,7 @@ struct CGMView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
             
+            // Readings chart or empty state
             if filteredReadings.isEmpty {
                 Spacer()
                 Text("No glucose readings yet")
@@ -92,20 +113,17 @@ struct CGMView: View {
                 .frame(height: 300)
                 .padding(.horizontal)
                 
-                // Sort readings descending: latest first
-                let sortedReadings = filteredReadings.sorted { $0.timestamp > $1.timestamp }
-                
+                // List of recent values with trend arrows
+                let sorted = filteredReadings.sorted { $0.timestamp > $1.timestamp }
                 ScrollView {
                     VStack(spacing: 12) {
-                        ForEach(Array(sortedReadings.enumerated()), id: \.element.id) { index, reading in
+                        ForEach(Array(sorted.enumerated()), id: \.element.id) { idx, reading in
                             HStack {
                                 Text(String(format: "%.1f mg/dL", reading.value))
-                                    .font(.title2)
-                                    .bold()
-                                
-                                // Compare with the next reading (chronologically earlier) if available.
-                                if index < sortedReadings.count - 1 {
-                                    let next = sortedReadings[index + 1]
+                                    .font(.title2).bold()
+                                // Compare to next-older reading
+                                if idx < sorted.count - 1 {
+                                    let next = sorted[idx + 1]
                                     if reading.value > next.value {
                                         Image(systemName: "arrow.up")
                                             .foregroundColor(.green)
@@ -120,9 +138,7 @@ struct CGMView: View {
                                     Image(systemName: "arrow.right")
                                         .foregroundColor(.gray)
                                 }
-                                
                                 Spacer()
-                                
                                 Text(reading.timestamp, style: .time)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
@@ -132,9 +148,8 @@ struct CGMView: View {
                     }
                 }
             }
-            NavigationLink(destination: PairCGMView().environmentObject(session),
-                           isActive: $showPairing) { EmptyView() }
         }
+        .navigationTitle("CGM Data")
         .onAppear {
             if let uid = session.userId {
                 readingVM.startListening(uid: uid)
@@ -143,11 +158,7 @@ struct CGMView: View {
                 cgmService.attemptAutoReconnect(using: cfg)
             }
         }
-//        .onDisappear {
-//            cgmService.disconnect()
-//            readingVM.stopListening()
-//        }
-        .navigationTitle("CGM Data")
     }
 }
+
 

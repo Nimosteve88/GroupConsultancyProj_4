@@ -5,7 +5,6 @@
 //  Created by Nimo, Steve on 13/06/2025.
 //
 
-
 import Foundation
 import TensorFlowLite
 import Accelerate
@@ -13,31 +12,32 @@ import Accelerate
 /// Encapsulates loading, preprocessing, and inference for the GluNet TFLite model.
 final class GluNetModel {
   private var interpreter: Interpreter
+    
 
-  // Normalization parameters (from model training)
-  private let glucoseMean: Float = 100.0
-  private let glucoseStd: Float = 50.0
-  private let carbMean: Float =  50.0
-  private let carbStd: Float =  50.0
-  private let insulinMean: Float = 1.0
-  private let insulinStd: Float = 1.0
+    // Normalization parameters (from model training)
+    private let glucoseMean: Float = 100.0   // mg/dL
+    private let glucoseStd: Float = 12.0    // mg/dL
+    private let carbMean: Float =  0.0       // grams (now zero for fasting scenario)
+    private let carbStd: Float =  50.0       // grams
+    private let insulinMean: Float = 0.0     // arbitrary units (now zero for fasting scenario)
+    private let insulinStd: Float = 1.0      // arbitrary units
 
-  /// Initialize interpreter with the bundled `glunet.tflite` model.
-  init?() {
-    print("[GluNetModel] Initializing interpreter...")
-    guard let path = Bundle.main.path(forResource: "glunet", ofType: "tflite") else {
-      print("[GluNetModel] ERROR: glunet.tflite not found")
-      return nil
+    /// Initialize interpreter with the bundled `glunet.tflite` model.
+    init?() {
+        print("[GluNetModel] Initializing interpreter...")
+        guard let path = Bundle.main.path(forResource: "glunet", ofType: "tflite") else {
+        print("[GluNetModel] ERROR: glunet.tflite not found")
+          return nil
     }
     do {
-      interpreter = try Interpreter(modelPath: path)
-      try interpreter.allocateTensors()
-      print("[GluNetModel] Interpreter allocated successfully")
+        interpreter = try Interpreter(modelPath: path)
+        try interpreter.allocateTensors()
+        print("[GluNetModel] Interpreter allocated successfully")
     } catch {
-      print("[GluNetModel] ERROR creating Interpreter: \(error)")
-      return nil
-    }
-  }
+        print("[GluNetModel] ERROR creating Interpreter: \(error)")
+        return nil
+        }
+      }
 
   /// Standardizes array to zero-mean, unit-variance.
   private func normalize(_ values: [Float], mean: Float, std: Float) -> [Float] {
@@ -90,6 +90,11 @@ final class GluNetModel {
     let cNorm = normalize(carb16, mean: carbMean, std: carbStd)
     let iNorm = normalize(ins16, mean: insulinMean, std: insulinStd)
     let tNorm = times.map { normalizeTime($0) }
+    print("[GluNetModel] Normalized values:")
+    print("[GluNetModel] Glucose: \(gNorm)")
+    print("[GluNetModel] Carbs: \(cNorm)")
+    print("[GluNetModel] Insulin: \(iNorm)")
+    print("[GluNetModel] Times: \(tNorm)")
 
     // Build input tensor [1,16,4]
     var input = [Float](); input.reserveCapacity(64)
@@ -101,8 +106,41 @@ final class GluNetModel {
     do {
       try interpreter.copy(inputData, toInputAt: 0)
       try interpreter.invoke()
+      
+      // Get all outputs for debugging
+//        let outputCount = interpreter.outputTensorCount
+//      print("[GluNetModel] Model has \(outputCount) output tensors")
+//      
+//      // Print each output tensor
+//      for i in 0..<outputCount {
+//        let output = try interpreter.output(at: i)
+//        let shape = output.shape
+//        print("[GluNetModel] Output tensor \(i) shape: \(shape)")
+//        
+//        // Convert to Float array
+//        let outputArray = output.data.toArray(type: Float.self)
+//        print("[GluNetModel] Output tensor \(i) values (first 10): \(outputArray.prefix(10))")
+//        
+//        // If this is the 256x1 output, print it formatted
+//        if shape.dimensions == [256, 1] {
+//          print("[GluNetModel] 256x1 Output tensor values:")
+//          for (index, value) in outputArray.enumerated() {
+//            print("[\(index)]: \(value)")
+//          }
+//        }
+//      }
+      
+      // Get the primary prediction output (assuming it's at index 0)
       let output = try interpreter.output(at: 0)
-      let raw = output.data.toArray(type: Float.self).first ?? 0
+      let outputData = output.data
+        let outputValue = outputData.withUnsafeBytes {
+            $0.load(as: Float.self)
+        }
+      print("Output Value: \(outputValue)")
+        
+      print("Model Output Values: \(output)")
+      let raw = ((output.data.toArray(type: Float.self).first ?? 0) - 128) * 0.1
+      
       // De-normalize prediction back to mg/dL
       let denorm = denormalize(raw, mean: glucoseMean, std: glucoseStd)
       print("[GluNetModel] raw pred=\(raw), denorm=\(denorm)")
