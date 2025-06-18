@@ -18,8 +18,15 @@ struct PredictionView: View {
         .shadow(radius: 4)
 
       VStack(spacing: 20) {
-        Text("30-Minute CGM Forecast")
+        Text("CGM Forecast")
           .font(.headline)
+        
+        Text("Predict your change in glucose levels based on recent CGM data. Positive values indicate an increase, negative values indicate a decrease.")
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+            .padding(.horizontal)
+          
+            
 
         if let error = vm.errorMessage {
           // Error state
