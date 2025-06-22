@@ -130,3 +130,4 @@ struct HomeView: View {
         .environmentObject(AdviceEngine.shared)
         .environmentObject(TodayTasksViewModel(session: session))
 }
+
